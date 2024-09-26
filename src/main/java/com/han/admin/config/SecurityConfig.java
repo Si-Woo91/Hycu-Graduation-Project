@@ -36,7 +36,6 @@ public class SecurityConfig {
                 .formLogin((formLogin) ->
                         formLogin
                         .loginPage("/") 
-//                        .loginProcessingUrl("/loginChk") // AJAX 요청 처리 URL
                         .failureHandler(customFailureHandler)
                         .defaultSuccessUrl("/test") // 로그인 성공 시 이동할 URL
                 )
