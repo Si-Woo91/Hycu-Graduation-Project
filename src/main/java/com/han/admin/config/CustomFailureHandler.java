@@ -3,6 +3,8 @@ package com.han.admin.config;
 import java.io.IOException;
 import java.net.URLEncoder;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.InternalAuthenticationServiceException;
@@ -17,6 +19,8 @@ import jakarta.servlet.http.HttpServletResponse;
 
 @Component
 public class CustomFailureHandler extends SimpleUrlAuthenticationFailureHandler {
+	
+	private static final Logger logger = LoggerFactory.getLogger(CustomFailureHandler.class);
 	
 	@Override
     public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response,
@@ -33,10 +37,11 @@ public class CustomFailureHandler extends SimpleUrlAuthenticationFailureHandler 
             errorMessage = "인증 요청이 거부되었습니다. 관리자에게 문의하세요.";
         } else {
             errorMessage = "알 수 없는 이유로 로그인에 실패하였습니다 관리자에게 문의하세요.";
+            logger.debug("알수 없습니다.");
         }
 
         errorMessage = URLEncoder.encode(errorMessage, "UTF-8");
-        setDefaultFailureUrl("/login?error=true&exception=" + errorMessage);
+        setDefaultFailureUrl("/?error=true&exception=" + errorMessage);	// 에러메시지
 
         super.onAuthenticationFailure(request, response, exception);
     }

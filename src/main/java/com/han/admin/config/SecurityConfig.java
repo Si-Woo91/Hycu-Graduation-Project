@@ -30,19 +30,23 @@ public class SecurityConfig {
 
                 .authorizeHttpRequests((authorizeRequests) ->
                         authorizeRequests
-                                .requestMatchers("/", "/js/**", "/css/**", "/test").permitAll()  // 권한 없는 모든 사용자 접근 가능
+                        		.requestMatchers("/admin").hasRole("ADMIN")
+//                                .requestMatchers("/", "/js/**", "/css/**", "/test").permitAll()  // 권한 없는 모든 사용자 접근 가능
+                                .requestMatchers("/", "/js/**", "/css/**").permitAll()  // 권한 없는 모든 사용자 접근 가능
                                 .anyRequest().authenticated()
                 )
                 .formLogin((formLogin) ->
                         formLogin
                         .loginPage("/") 
                         .failureHandler(customFailureHandler)
-                        .defaultSuccessUrl("/test") // 로그인 성공 시 이동할 URL
+                        .usernameParameter("userId")
+                        .defaultSuccessUrl("/admin", true) // 로그인 성공 시 이동할 URL
                 )
                 .logout((logoutConfig) ->
                         logoutConfig
                                 .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
                                 .logoutSuccessUrl("/")
+                                .invalidateHttpSession(true)	// 로그아웃시 세션삭제
                 );
 
         return http.build();
