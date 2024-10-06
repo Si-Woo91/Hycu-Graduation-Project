@@ -3,7 +3,6 @@ package com.han.admin.config;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -31,7 +30,6 @@ public class SecurityConfig {
                 .authorizeHttpRequests((authorizeRequests) ->
                         authorizeRequests
                         		.requestMatchers("/admin").hasRole("ADMIN")
-//                                .requestMatchers("/", "/js/**", "/css/**", "/test").permitAll()  // 권한 없는 모든 사용자 접근 가능
                                 .requestMatchers("/", "/js/**", "/css/**").permitAll()  // 권한 없는 모든 사용자 접근 가능
                                 .anyRequest().authenticated()
                 )

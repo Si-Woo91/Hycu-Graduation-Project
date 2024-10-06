@@ -1,21 +1,82 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <th:block th:fragment="headerFragment">
-  <head>
-    <title>관리자 전용</title>
-	<meta charset="UTF-8">
-	<meta name="_csrf" th:content="${_csrf.token}"/>
-	<meta name="_csrf_header" th:content="${_csrf.headerName}"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1"/>
-    <link rel="stylesheet" href="/css/bootstrap.min.css">
-<!--    <script src="/js/jquery-3.6.0.min.js"></script>-->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
-    <script src="/js/bootstrap.min.js"></script>
-    <script src="/js/bootstrap.min.js"></script>
-<!--    <script src="/js/login.js" ></script>-->
-    <div>
-		<h1 class="text-center">관리자 전용</h1>
-	</div>
-  </head>
+
+	<head>
+		<title>관리자 전용</title>
+		<meta charset="UTF-8">
+		<meta name="_csrf" th:content="${_csrf.token}" />
+		<meta name="_csrf_header" th:content="${_csrf.headerName}" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<link rel="stylesheet" href="/css/bootstrap.min.css">
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+		<script src="/js/bootstrap.min.js"></script>
+
+
+		<style>
+			.header {
+				background-color: #e9ecef;
+				/* 헤더 배경색 */
+				padding: 4%;
+				/* 상하 여백 */
+				position: sticky;
+			}
+
+			.header h1 {
+				color: black;
+				/* 텍스트 색상 */
+				margin: 0;
+				/* 기본 여백 제거 */
+			}
+		</style>
+	</head>
+
+	<header>
+		<div class="header text-center">
+			<div class="d-flex justify-content-between align-items-center">
+				<div class="flex-grow-1 text-center">
+					<h1>관리자 전용</h1>
+				</div>
+				<div class="icons">
+					<!-- logout btn -->
+					<a class="logout" sec:authorize="isAuthenticated()" th:href="@{/logout}">
+						<i data-feather="log-out"></i>
+					</a>
+				</div>
+			</div>
+
+			<!-- 관리 탭 start -->
+			<div class="container mt-4" sec:authorize="isAuthenticated()">
+				<div class="row justify-content-center">
+					<div class="col-md-8">
+						<ul class="nav nav-pills justify-content-around">
+							<!-- 회원관리 -->
+							<li class="nav-item">
+								<a class="nav-link p-3 border border-primary rounded" th:href="@{/admin?tab=member}"
+									th:class="${#strings.isEmpty(param.tab) or #strings.equals(param.tab, 'member') ? 'nav-link active' : 'nav-link'}">
+									회원관리
+								</a>
+							</li>
+							<!-- 상품관리 -->
+							<li class="nav-item">
+								<a class="nav-link p-3 border border-primary rounded" th:href="@{/admin?tab=product}"
+									th:class="${#strings.equals(param.tab, 'product') ? 'nav-link active' : 'nav-link'}">
+									상품관리
+								</a>
+							</li>
+							<!-- 주문현황 -->
+							<li class="nav-item">
+								<a class="nav-link p-3 border border-primary rounded" th:href="@{/admin?tab=order}"
+									th:class="${#strings.equals(param.tab, 'order') ? 'nav-link active' : 'nav-link'}">
+									주문현황
+								</a>
+							</li>
+						</ul>
+					</div>
+				</div>
+			</div>
+			<!-- 관리 탭 end -->
+	</header>
 </th:block>
+
 </html>

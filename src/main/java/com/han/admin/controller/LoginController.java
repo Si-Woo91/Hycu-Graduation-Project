@@ -1,5 +1,6 @@
 package com.han.admin.controller;
 
+import java.security.Principal;
 import java.util.Locale;
 
 import org.slf4j.Logger;
@@ -9,6 +10,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+
+import com.han.admin.utill.CustomUtill;
 
 import lombok.RequiredArgsConstructor;
 
@@ -20,12 +23,19 @@ public class LoginController {
 	private static final Logger logger = LoggerFactory.getLogger(LoginController.class);
 	
 	@GetMapping(value = "/")
-	public String home(Locale locale, Model model, @RequestParam(value="error", required = false) String error,
-	        @RequestParam(value = "exception", required = false) String exception) {
+	public String home(Locale locale
+						, Model model
+						, @RequestParam(value="error", required = false) String error
+						, @RequestParam(value = "exception", required = false) String exception
+						, Principal principal) {
 		logger.info("Welcome home! The client locale is {}.", locale);
 		logger.debug("로그인 페이지");
-		
-		
+
+		// 로그인이 되어 있을시 admin 페이지로 이동
+		if(!CustomUtill.isNullOrEmpty(principal)) {
+			
+			return "redirect:/admin";
+		}
 		
 		/* 관리자 비밀번호 암호화
 		 * BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
@@ -41,26 +51,8 @@ public class LoginController {
     	model.addAttribute("error", error);
     	model.addAttribute("exception", exception);
 
-		return "admin/login";
+		return "login/login";
 	}
 	
-	
-	@GetMapping(value = "/test")
-	public String test() {
-		
-		logger.debug("테스트");
-		
-		return "admin/admintest";
-	}
-	
-	@GetMapping(value = "/admin")
-	public String admin() {
-		
-		logger.debug("관리자 페이지");
-		
-		return "admin/admin";
-		
-	}
-
 	
 }

@@ -12,7 +12,9 @@ import org.springframework.stereotype.Service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.han.admin.domain.AdminInfo;
 import com.han.admin.domain.UserInfo;
+import com.han.admin.repository.AdminRepository;
 import com.han.admin.repository.UserRepository;
 import com.han.admin.utill.CustomStringUtill;
 
@@ -27,6 +29,8 @@ import com.han.admin.utill.CustomStringUtill;
 public class CustomUserDetailsService implements UserDetailsService{
 
 	private final UserRepository userRepository;
+
+	private final AdminRepository adminRepository;
 	
 	private static final Logger logger = LoggerFactory.getLogger(CustomUserDetailsService.class);
 	
@@ -34,10 +38,21 @@ public class CustomUserDetailsService implements UserDetailsService{
 	public UserDetails loadUserByUsername(String userId) throws UsernameNotFoundException {
 		logger.debug("로그인 ID 확인 ::" + userId);
 		
-		UserInfo userData = userRepository.findByuserId(userId).orElseThrow(() -> new UsernameNotFoundException("userId(%s) not found".formatted(userId)));
+		if("admin".equals(userId)) {
+			
+			logger.debug("admin 확인 : " + userId);
+			
+			AdminInfo adminData = adminRepository.findByAdminId(userId).orElseThrow(() -> new UsernameNotFoundException("userId(%s) not found".formatted(userId)));
+			
+			return new User(adminData.getUsername(), adminData.getPassword(), adminData.getAuthorities());
+		}
 		
-		logger.debug("userData :: " + CustomStringUtill.toString(userData));
-		logger.debug("권한 :: " + userData.getAuthorities());
+		
+			UserInfo userData = userRepository.findByuserId(userId).orElseThrow(() -> new UsernameNotFoundException("userId(%s) not found".formatted(userId)));
+			logger.debug("userData :: " + CustomStringUtill.toString(userData));
+			logger.debug("권한 :: " + userData.getAuthorities());
+		
+		
 		return new User(userData.getUsername(), userData.getPassword(), userData.getAuthorities());
 		
 	}

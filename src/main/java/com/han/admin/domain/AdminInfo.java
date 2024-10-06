@@ -1,11 +1,5 @@
 package com.han.admin.domain;
 
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -21,54 +15,42 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.SequenceGenerator;
+import lombok.AccessLevel;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @EntityListeners(AuditingEntityListener.class)
 @Entity
-public class UserInfo implements UserDetails{
-
+public class AdminInfo implements UserDetails{
+	
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "user_seq_gen")
-    @SequenceGenerator(name = "user_seq_gen", sequenceName = "user_seq", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "adminInfo_seq_gen")
+    @SequenceGenerator(name = "adminInfo_seq_gen", sequenceName = "adminInfo_seq", allocationSize = 1)
 	private Long id;
 	
 	@Column(nullable = false, unique = true)
-	private String userId;
+	private String adminId;
 	
 	@Column(nullable = false)
-	private String passWord;
-	
-	@Column(nullable = false)
-	private String userNm;
-	
-	@Column(nullable = false)
-	private String birth;
-	
-	@Column(nullable = false)
-	private String userSex;
-	
-	@Column(nullable = false)
-	private String userAddress;
-	
-	@Column(nullable = false)
-	private LocalDateTime createDate;
-	
+	private String adminPw;
 	
 	@Builder
-	public UserInfo(String userId, String passWord, Collection<? extends GrantedAuthority> authorities) {
-		this.userId = userId;
-		this.passWord = passWord;
+	public AdminInfo(String adminId, String adminPw, Collection<? extends GrantedAuthority> authorities) {
+		this.adminId = adminId;
+		this.adminPw = adminPw;
 	}
 
 	@Override
 	public String getUsername(){
-		return userId;
+		return adminId;
 	}
 	
 	@Override
 	public String getPassword(){
-		return passWord;
+		return adminPw;
 	}
 
 	@Override
@@ -88,8 +70,9 @@ public class UserInfo implements UserDetails{
 	
 	// 관리자 확인
 	public boolean isAdmin() {
-        return "admin".equals(userId);
+        return "admin".equals(adminId);
     }
 
-
+	
+	
 }
