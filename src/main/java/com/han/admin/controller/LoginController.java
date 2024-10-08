@@ -34,7 +34,7 @@ public class LoginController {
 		// 로그인이 되어 있을시 admin 페이지로 이동
 		if(!CustomUtill.isNullOrEmpty(principal)) {
 			
-			return "redirect:/admin";
+			return "redirect:/userList";
 		}
 		
 		/* 관리자 비밀번호 암호화

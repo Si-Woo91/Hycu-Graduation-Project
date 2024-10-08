@@ -8,16 +8,21 @@
 		<meta name="_csrf" th:content="${_csrf.token}" />
 		<meta name="_csrf_header" th:content="${_csrf.headerName}" />
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
-		<link rel="stylesheet" href="/css/bootstrap.min.css">
-		<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
-		<script src="/js/bootstrap.min.js"></script>
+<!--		<link rel="stylesheet" href="/css/bootstrap.min.css">-->
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+	
+<!-- jQuery 먼저 로드 -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<!-- Bootstrap JavaScript 나중에 로드 -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+
 
 
 		<style>
 			.header {
 				background-color: #e9ecef;
 				/* 헤더 배경색 */
-				padding: 4%;
+				padding: 2%;
 				/* 상하 여백 */
 				position: sticky;
 			}
@@ -35,7 +40,7 @@
 		<div class="header text-center">
 			<div class="d-flex justify-content-between align-items-center">
 				<div class="flex-grow-1 text-center">
-					<h1>관리자 전용</h1>
+					<h1 class="fw-bold">관리자 전용</h1>
 				</div>
 				<div class="icons">
 					<!-- logout btn -->
@@ -52,23 +57,20 @@
 						<ul class="nav nav-pills justify-content-around">
 							<!-- 회원관리 -->
 							<li class="nav-item">
-								<a class="nav-link p-3 border border-primary rounded" th:href="@{/admin?tab=member}"
-									th:class="${#strings.isEmpty(param.tab) or #strings.equals(param.tab, 'member') ? 'nav-link active' : 'nav-link'}">
+								<a class="nav-link p-3 fw-bold fs-4 text-dark" th:href="@{/userList}">
 									회원관리
 								</a>
 							</li>
 							<!-- 상품관리 -->
 							<li class="nav-item">
-								<a class="nav-link p-3 border border-primary rounded" th:href="@{/admin?tab=product}"
-									th:class="${#strings.equals(param.tab, 'product') ? 'nav-link active' : 'nav-link'}">
+								<a class="nav-link p-3 fw-bold fs-4 text-dark" th:href="@{/prodList}">
 									상품관리
 								</a>
 							</li>
 							<!-- 주문현황 -->
 							<li class="nav-item">
-								<a class="nav-link p-3 border border-primary rounded" th:href="@{/admin?tab=order}"
-									th:class="${#strings.equals(param.tab, 'order') ? 'nav-link active' : 'nav-link'}">
-									주문현황
+								<a class="nav-link p-3 fw-bold fs-4 text-dark" th:href="@{/qnaList}">
+									문의내용관리
 								</a>
 							</li>
 						</ul>

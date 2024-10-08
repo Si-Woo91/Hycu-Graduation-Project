@@ -96,7 +96,7 @@ public class UserService {
 	    
 	    List<UserInfoDTO> outList = new ArrayList<>();
 	    
-	    if (CustomUtill.isNullOrEmpty(userList)) {
+	    if (userList == null) {
 
 	    	return null;
 	    

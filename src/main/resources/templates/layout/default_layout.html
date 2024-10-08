@@ -8,11 +8,15 @@
 		<th:block th:replace="~{fragments/header :: headerFragment}"></th:block>
 	</th:block>
 	<div style="flex: 1; overflow-y: auto;  padding: 4%;">
-		<th:block layout:fragment="content"></th:block>
+		<th:block layout:fragment="content">
+		</th:block>
 	</div>
+<!--		<th:block layout:fragment="modal"></th:block>-->
 	<th:block th:if="${showFooter}">
 		<th:block th:replace="~{fragments/footer :: footerFragment}"></th:block>
 	</th:block>
+	
+	
 </body>
 <th:block layout:fragment="script"> </th:block>
 

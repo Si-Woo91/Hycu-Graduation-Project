@@ -1,0 +1,48 @@
+<style>
+    /* 숫자 입력의 위/아래 버튼 숨기기 */
+    input[type=number]::-webkit-inner-spin-button,
+    input[type=number]::-webkit-outer-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+    }
+
+    input[type=number] {
+        -moz-appearance: textfield; /* Firefox에 대한 설정 */
+    }
+</style>
+
+<body>
+    <div class="modal-header">
+        <h5 class="modal-title" id="regModalLabel">상품 등록</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="closeModal()">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <div class="form-group">
+            <label for="productName">상품명</label>
+            <input type="text" class="form-control" id="productName" placeholder="상품명을 입력하세요">
+        </div>
+        <div class="form-group">
+            <label for="productCode">상품코드</label>
+            <input type="text" class="form-control" id="productCode" placeholder="상품코드를 입력하세요">
+        </div>
+        <div class="form-group">
+            <label for="productPrice">가격</label>
+            <input type="number" class="form-control" id="productPrice" placeholder="가격을 입력하세요">
+        </div>
+        <div class="form-group">
+            <label for="prodImg">대표 이미지 업로드</label>
+            <input type="file" class="form-control-file" id="prodImg" accept="image/*">
+        </div>
+        <div class="form-group">
+            <label for="prodDetailImg">상세 이미지 업로드</label>
+            <input type="file" class="form-control-file" id="prodDetailImg" accept="image/*">
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="closeModal()">닫기</button>
+        <button type="button" class="btn btn-primary" id="saveBtn">저장</button>
+    </div>
+    <script th:src="@{/js/admin.js}"></script>
+</body>

@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout/default_layout}">
+
+<body th:with="showHeader=true, showFooter=true">
+	<th:block layout:fragment="content">
+		<section class="common">
+			<article>
+				<div class="content" id="content" style="margin-top: 20px;">
+					<div class="admin-container member-list">
+
+						<!-- 상품 목록 테이블 start -->
+						<div class="table-responsive">
+							<table class="table table-hover table-bordered" style="margin: 0 auto; width: 80%;">
+								<thead class="thead-light">
+									<tr>
+										<th class="text-center">선택</th>
+										<th class="text-center">문의제목</th>
+										<th class="text-center">문의내용</th>
+										<th class="text-center">문의자</th>
+										<th class="text-center">문의일자</th>
+									</tr>
+								</thead>
+								<tbody>
+									<!--<tr th:each="prod : ${prodInfoPage}">-->
+									<tr>
+										<td class="text-center">
+											<!--<input type="checkbox" class="prodCheckbox" th:value="${prod.id}" />-->
+											<input type="checkbox" class="userCheckbox"/>
+										</td>
+										<td class="text-center" ></td>
+										<td class="text-center" ></td>
+										<td class="text-center" ></td>
+										<td class="text-center" ></td>
+									</tr>
+									<!-- 회원 정보가 없을 때 메시지 표시 -->
+<!--									<tr th:if="${noProds}">
+										<td colspan="7" class="text-center">등록된 상품이 없습니다.</td>
+									</tr>-->
+
+								</tbody>
+							</table>
+							<!-- 삭제 버튼 start -->
+							<div class="d-flex justify-content-end mt-3" style="width: 80%; margin: 0 auto;">
+								<button class="btn btn-danger" id="deleteBtn">삭제</button>
+							</div>
+							<!-- 삭제 버튼 end -->
+						</div>
+						<!-- 상품 목록 테이블 end -->
+
+						<!-- 페이지 네비게이션 start-->
+<!--						<nav aria-label="Page navigation" class="mt-4" th:if="${!noUsers}">
+							<ul class="pagination justify-content-center m-0">
+								<li class="page-item" th:classappend="${currentPage == 0} ? 'disabled'">
+									<a class="page-link"
+										th:href="@{/admin(page=${currentPage - 1}, size=${size}, keyword=${keyword})}">이전</a>
+								</li>
+								<li class="page-item" th:each="pageNum : ${#numbers.sequence(0, totalPages - 1)}"
+									th:classappend="${pageNum == currentPage} ? 'active'">
+									<a class="page-link"
+										th:href="@{/admin(page=${pageNum}, size=${size}, keyword=${keyword})}"
+										th:text="${pageNum + 1}"></a>
+								</li>
+								<li class="page-item" th:classappend="${currentPage == totalPages - 1} ? 'disabled'">
+									<a class="page-link"
+										th:href="@{/admin(page=${currentPage + 1}, size=${size}, keyword=${keyword})}">다음</a>
+								</li>
+							</ul>
+						</nav>-->
+						<!-- 페이지 네비게이션 end -->
+
+					</div>
+				</div>
+				<!-- 상품 관리 페이지 end -->
+
+			</article>
+		</section>
+	</th:block>
+	<th:block layout:fragment="script">
+		<script th:src="@{/js/admin.js}"></script>
+	</th:block>
+
+</html>

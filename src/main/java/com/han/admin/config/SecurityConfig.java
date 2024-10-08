@@ -29,7 +29,7 @@ public class SecurityConfig {
 
                 .authorizeHttpRequests((authorizeRequests) ->
                         authorizeRequests
-                        		.requestMatchers("/admin").hasRole("ADMIN")
+                        		.requestMatchers("/userList").hasRole("ADMIN")
                                 .requestMatchers("/", "/js/**", "/css/**").permitAll()  // 권한 없는 모든 사용자 접근 가능
                                 .anyRequest().authenticated()
                 )
@@ -38,7 +38,7 @@ public class SecurityConfig {
                         .loginPage("/") 
                         .failureHandler(customFailureHandler)
                         .usernameParameter("userId")
-                        .defaultSuccessUrl("/admin", true) // 로그인 성공 시 이동할 URL
+                        .defaultSuccessUrl("/userList", true) // 로그인 성공 시 이동할 URL
                 )
                 .logout((logoutConfig) ->
                         logoutConfig

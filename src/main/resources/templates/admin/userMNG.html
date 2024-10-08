@@ -7,24 +7,21 @@
 		<section class="common">
 			<article>
 				<div class="content" id="content" style="margin-top: 20px;">
-					<div class="admin-container member-list"
-						th:if="${#strings.isEmpty(param.tab) or #strings.equals(param.tab, 'member')}">
+					<div class="admin-container member-list">
 						<!-- search-bar start -->
 						<div id="board-search" style="padding-bottom: 20px;">
 							<div class="container">
 								<div class="row justify-content-center">
 									<div class="col-md-6">
-										<form method="get" class="form-inline">
-											<div class="input-group">
-												<input type="text" class="form-control" id="keyword" name="keyword"
-													th:value="${keyword}" placeholder="회원 이름을 입력해주세요.">
-												<!-- 검색 버튼 start -->
-												<div class="input-group-append" style="margin-left: 10px;">
-													<button type="submit" class="btn btn-primary">검색</button>
-												</div>
-												<!-- 검색 버튼 end -->
+										<div class="input-group" style="width: 100%;"> <!-- 입력 상자의 너비를 300px로 설정 -->
+											<input type="text" class="form-control" id="keyword" name="keyword"
+												th:value="${keyword}" placeholder="회원 이름을 입력해주세요.">
+											<!-- 검색 버튼 start -->
+											<div class="input-group-append" style="margin-left: 10px;">
+												<button type="button" class="btn btn-primary" id="searchBtn">검색</button>
 											</div>
-										</form>
+											<!-- 검색 버튼 end -->
+										</div>
 									</div>
 								</div>
 							</div>

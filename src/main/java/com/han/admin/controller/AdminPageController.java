@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.han.admin.dto.ResponseMessageDTO;
 import com.han.admin.dto.UserInfoDTO;
@@ -31,8 +32,21 @@ public class AdminPageController {
 
 	private final UserService userService;
 
-	@GetMapping(value = "/admin")
-	public String admin(@RequestParam(name = "keyword", required = false) String keyword,
+	
+	/* getMapping Start */ 	
+	
+	/**
+	 * 사용자 관리 페이지
+	 * 
+	 * @param keyword
+	 * @param page
+	 * @param size
+	 * @param tab
+	 * @param model
+	 * @return
+	 */
+	@GetMapping(value = "/userList")
+	public String getUsersMNG(@RequestParam(name = "keyword", required = false) String keyword,
 			@RequestParam(name = "page", defaultValue = "0") int page,
 			@RequestParam(name = "size", defaultValue = "10") int size,
 			@RequestParam(name = "tab", required = false) String tab, Model model) {
@@ -44,28 +58,76 @@ public class AdminPageController {
 		
 		
 	    // 사용자 정보가 없을 경우 페이지 처리를 위한 추가 로직
-	    if (CustomUtill.isNullOrEmpty(userInfoPage.getContent())) {
+		boolean noUsers;
+	    if (CustomUtill.isNullOrEmpty(userInfoPage.getContent())) 
+	    {
+	    	noUsers = true;
 	    	
-	        model.addAttribute("noUsers", true);
 	    }
 	    else
 	    {
 	    	
-	    	model.addAttribute("noUsers", false);
+	    	noUsers = false;
 	    	
 	    }
 	    
+	    logger.debug("noUsers :: " + noUsers);
+	    
+	    model.addAttribute("noUsers", noUsers);
 		model.addAttribute("userInfoPage", userInfoPage.getContent());
 		model.addAttribute("currentPage", userInfoPage.getNumber());
 		model.addAttribute("totalPages", userInfoPage.getTotalPages());
 		model.addAttribute("keyword", keyword);
 		model.addAttribute("tab", tab);
 		
+
+		return "admin/userMNG";
+	}
+	
+	/**
+	 * 상품관리 페이지
+	 * 
+	 * @param model
+	 * @return
+	 */
+	@GetMapping(value = "/prodList")
+	public String getProdMNG( Model model) {
+
 		
 
-		return "admin/userManagement";
+		return "admin/prodMNG";
 	}
+	
+	/**
+	 * qna관리 페이지
+	 * 
+	 * @param model
+	 * @return
+	 */
+	@GetMapping(value = "/qnaList")
+	public String getQNAMNG( Model model) {
 
+		return "admin/qnaMNG";
+	}
+	
+	/**
+	 * 상품 등록 모달
+	 * 
+	 * @return
+	 */
+    @GetMapping(value = "/modal/regModal")
+    public String getRegModal() {
+    	
+    	logger.debug("확인");
+        return "modal/regModal";
+    }
+	
+	/* getMapping End */ 
+	
+//	---------------------------------------------------------------------------------------
+    
+    
+	/* postMapping Start */ 
 	/**
 	 * 회원 삭제
 	 * 
@@ -76,9 +138,6 @@ public class AdminPageController {
 	public ResponseEntity<?> deleteUsers(@RequestBody List<UserInfoDTO> reqInDto) {
 		
 		logger.debug("사용자 삭제 컨트롤러");
-		
-//		logger.debug("reqInDto :: " + CustomStringUtill.toString(reqInDto.size()));
-		
 		
 		// 리스트에 받아온 id값을 저장
 		List<Long> ids = reqInDto.stream().map(UserInfoDTO::getId).toList();
@@ -100,5 +159,33 @@ public class AdminPageController {
 		
 		}
 	}
+	
+	/**
+	 * 상품등록
+	 * 
+	 * @param productName
+	 * @param productCode
+	 * @param productPrice
+	 * @param prodImg
+	 * @param prodDetailImg
+	 * @return
+	 */
+	@PostMapping("/admin/saveProduct")
+	public ResponseEntity<String> saveProduct(
+	        @RequestParam("productName") String productName
+	        , @RequestParam("productCode") String productCode
+	        , @RequestParam("productPrice") Double productPrice
+	        , @RequestParam("prodImg") MultipartFile prodImg
+	        , @RequestParam("prodDetailImg") MultipartFile prodDetailImg) {
 
+		
+		
+		
+	    return ResponseEntity.ok("상품이 등록되었습니다.");
+	}
+	
+	
+	/* postMapping End */ 
+	
+	
 }
