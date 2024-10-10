@@ -21,6 +21,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.SequenceGenerator;
+import jakarta.validation.constraints.NotNull;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -33,25 +34,26 @@ public class UserInfo implements UserDetails{
     @SequenceGenerator(name = "user_seq_gen", sequenceName = "user_seq", allocationSize = 1)
 	private Long id;
 	
-	@Column(nullable = false, unique = true)
+    @NotNull
+	@Column( unique = true)
 	private String userId;
 	
-	@Column(nullable = false)
+	@NotNull
 	private String passWord;
 	
-	@Column(nullable = false)
+	@NotNull
 	private String userNm;
 	
-	@Column(nullable = false)
+	@NotNull
 	private String birth;
 	
-	@Column(nullable = false)
+	@NotNull
 	private String userSex;
 	
-	@Column(nullable = false)
+	@NotNull
 	private String userAddress;
 	
-	@Column(nullable = false)
+	@NotNull
 	private LocalDateTime createDate;
 	
 	

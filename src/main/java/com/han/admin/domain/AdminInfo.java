@@ -15,6 +15,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.SequenceGenerator;
+import jakarta.validation.constraints.NotNull;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -27,14 +28,15 @@ import lombok.NoArgsConstructor;
 public class AdminInfo implements UserDetails{
 	
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "adminInfo_seq_gen")
-    @SequenceGenerator(name = "adminInfo_seq_gen", sequenceName = "adminInfo_seq", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "admin_Info_seq_gen")
+    @SequenceGenerator(name = "admin_Info_seq_gen", sequenceName = "admin_Info_seq", allocationSize = 1)
 	private Long id;
 	
-	@Column(nullable = false, unique = true)
+    @NotNull
+	@Column(unique = true)
 	private String adminId;
 	
-	@Column(nullable = false)
+	@NotNull
 	private String adminPw;
 	
 	@Builder

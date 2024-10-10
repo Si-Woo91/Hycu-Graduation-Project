@@ -6,28 +6,26 @@ var csrfHeader = $('meta[name="_csrf_header"]').attr('content');
 
 // 검색
 $(document).ready(function() {
-    $('#searchBtn').click(function() {
+	$('#searchBtn').click(function() {
 		console.log("검색");
-        var keyword = $('#keyword').val(); // 입력된 검색어
+		var keyword = $('#keyword').val(); // 입력된 검색어
 
-        // AJAX 호출
-        $.ajax({
-            url: '/search',
-            type: 'GET',
-            data: { keyword: keyword },
-            success: function(data) {
-                console.log('검색 결과:', data);
-            },
-            error: function(xhr, status, error) {
-                console.error('검색 중 오류 발생:', error);
-                alert('검색 중 오류가 발생했습니다. 다시 시도해주세요.');
-            }
-        });
-    });
-});
+		// AJAX 호출
+		$.ajax({
+			url: '/search',
+			type: 'GET',
+			data: { keyword: keyword },
+			success: function(data) {
+				console.log('검색 결과:', data);
+			},
+			error: function(xhr, status, error) {
+				console.error('검색 중 오류 발생:', error);
+				alert('검색 중 오류가 발생했습니다. 다시 시도해주세요.');
+			}
+		});
+	});
 
-// 회원 삭제 ajax
-$(document).ready(function() {
+	// 회원 삭제 ajax
 	$('#deleteBtn').on('click', function() {
 		var selectedIds = getSelectedUserIds();
 
@@ -81,53 +79,69 @@ $(document).ready(function() {
 
 		return selectedIds;
 	}
+
+	/* 회원관리 end */
+
+
+	/* 상품관리 start */
+
+	// 상품 등록
+	$('#saveBtn').click(function() {
+
+		var productType = $('#productType').val(); 
+		var productName = $('#productName').val();
+		var productCode = $('#productCode').val();
+		var productPrice = $('#productPrice').val();
+		var productQuantity = $('#productQuantity').val();
+		var prodImg = $('#prodImg')[0].files[0];
+		var prodDetailImg = $('#prodDetailImg')[0].files[0];
+		
+		if (!productType || !productName || !productCode || !productPrice || !productQuantity || !prodImg || !prodDetailImg) {
+        	alert('모든 항목을 입력해주세요.');
+        	return; // 필수 입력값이 빠졌을 경우 요청을 중단
+		}
+		
+		// FormData 객체를 생성
+		var formData = new FormData();
+		formData.append('productType', productType);
+		formData.append('productName', productName);
+		formData.append('productCode', productCode);
+		formData.append('productPrice', productPrice);
+		formData.append('productQuantity', productQuantity);
+		formData.append('prodImg', prodImg);
+		formData.append('prodDetailImg', prodDetailImg);
+
+		// AJAX
+		$.ajax({
+			url: '/saveProduct', // 데이터를 저장할 서버 URL
+			type: 'POST',
+			data: formData,
+			headers: { [csrfHeader]: csrfToken },
+			contentType: false,
+			processData: false,
+			success: function(response) {
+
+				// 성공
+				alert('상품이 성공적으로 등록되었습니다!');
+				closeModal();
+			},
+			error: function(xhr, status, error) {
+				// 오류
+				console.error('상품 등록 중 오류 발생:', error);
+				alert('상품 등록에 실패했습니다. 다시 시도해주세요.');
+			}
+		});
+	});
+
+
+
+	/* 상품관리 end */
 });
 
-/* 회원관리 end */
-
-
-/* 상품관리 start */
-
-// 상품 등록
-$(document).ready(function() {
-    $('#saveBtn').click(function() {
-
-        var productName = $('#productName').val();
-        var productCode = $('#productCode').val();
-        var productPrice = $('#productPrice').val();
-        var prodImg = $('#prodImg')[0].files[0];
-        var prodDetailImg = $('#prodDetailImg')[0].files[0];
-
-        // FormData 객체를 생성
-        var formData = new FormData();
-        formData.append('productName', productName);
-        formData.append('productCode', productCode);
-        formData.append('productPrice', productPrice);
-        formData.append('prodImg', prodImg);
-        formData.append('prodDetailImg', prodDetailImg);
-
-        // AJAX
-        $.ajax({
-            url: '/saveProduct', // 데이터를 저장할 서버 URL
-            type: 'POST',
-            data: formData,
-            contentType: false,
-            processData: false,
-            success: function(response) {
-				
-                // 성공
-                alert('상품이 성공적으로 등록되었습니다!');
-                closeModal();
-            },
-            error: function(xhr, status, error) {
-                // 오류
-                console.error('상품 등록 중 오류 발생:', error);
-                alert('상품 등록에 실패했습니다. 다시 시도해주세요.');
-            }
-        });
-    });
-});
-
+// 모달 창 닫기
+function closeModal() {
+	$('#regModal').modal('hide');
+}
 // 상품 등록 모달창
 function loadModalContent() {
 	$.ajax({
@@ -145,10 +159,24 @@ function loadModalContent() {
 	});
 }
 
-// 모달 창 닫기
-function closeModal() {
-    $('#regModal').modal('hide');
+// 수량 증가 함수
+function increaseQuantity() {
+    var quantityInput = document.getElementById('productQuantity');
+    var currentValue = parseInt(quantityInput.value);
+
+    if (!isNaN(currentValue)) {
+        quantityInput.value = currentValue + 1;
+    }
 }
 
-/* 상품관리 end */
+// 수량 감소 함수
+function decreaseQuantity() {
+    var quantityInput = document.getElementById('productQuantity');
+    var currentValue = parseInt(quantityInput.value);
+
+    if (!isNaN(currentValue) && currentValue > 1) { // 수량은 1 이하로 줄어들지 않도록 설정
+        quantityInput.value = currentValue - 1;
+    }
+}
+
 

@@ -15,8 +15,12 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.han.admin.dto.ProdImgDTO;
+import com.han.admin.dto.ProdInfoDTO;
 import com.han.admin.dto.ResponseMessageDTO;
 import com.han.admin.dto.UserInfoDTO;
+import com.han.admin.service.AttachmentService;
+import com.han.admin.service.ProdService;
 import com.han.admin.service.UserService;
 import com.han.admin.utill.CustomUtill;
 
@@ -31,6 +35,10 @@ public class AdminPageController {
 	private static final Logger logger = LoggerFactory.getLogger(AdminPageController.class);
 
 	private final UserService userService;
+	
+	private final AttachmentService attachmentService;
+	
+	private final ProdService prodService;
 
 	
 	/* getMapping Start */ 	
@@ -92,9 +100,11 @@ public class AdminPageController {
 	 */
 	@GetMapping(value = "/prodList")
 	public String getProdMNG( Model model) {
-
 		
-
+		List<ProdInfoDTO> inList = prodService.getPordList();
+		
+		model.addAttribute("prodInfo" , inList);
+		
 		return "admin/prodMNG";
 	}
 	
@@ -170,15 +180,25 @@ public class AdminPageController {
 	 * @param prodDetailImg
 	 * @return
 	 */
-	@PostMapping("/admin/saveProduct")
+	@PostMapping("/saveProduct")
 	public ResponseEntity<String> saveProduct(
-	        @RequestParam("productName") String productName
+			@RequestParam("productType") String productType
+	        , @RequestParam("productName") String productName
 	        , @RequestParam("productCode") String productCode
-	        , @RequestParam("productPrice") Double productPrice
+	        , @RequestParam("productPrice") int productPrice
+	        , @RequestParam("productQuantity") int productQuantity
 	        , @RequestParam("prodImg") MultipartFile prodImg
 	        , @RequestParam("prodDetailImg") MultipartFile prodDetailImg) {
 
 		
+		// 이미지 파일 세팅
+		ProdImgDTO inImgDTO = attachmentService.setImges(prodImg, prodDetailImg, productName);
+		
+		// 상품 dto 세팅
+		ProdInfoDTO inProdDTO = prodService.getProdDTO(productType, productName, productCode, productPrice, productQuantity);
+		
+		// 상품 및 이미지 저장
+		prodService.saveProd(inProdDTO, inImgDTO);
 		
 		
 	    return ResponseEntity.ok("상품이 등록되었습니다.");

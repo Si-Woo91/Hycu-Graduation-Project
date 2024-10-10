@@ -17,19 +17,21 @@
 										<th class="text-center">상품명</th>
 										<th class="text-center">상품코드</th>
 										<th class="text-center">가격</th>
+										<th class="text-center">재고수량</th>
 										<th class="text-center">대표이미지</th>
 										<th class="text-center">상세이미지</th>
 									</tr>
 								</thead>
 								<tbody>
-									<tr>
+									<tr th:each="prod : ${prodInfo}">
 										<td class="text-center">
-											<input type="checkbox" class="userCheckbox" />
+											<input type="checkbox" class="userCheckbox" th:value="${prod.id}" />
 										</td>
-										<td class="text-center"></td>
-										<td class="text-center"></td>
-										<td class="text-center"></td>
-										<td class="text-center"></td>
+										<td class="text-center" th:text="${prod.prodType}"></td>
+										<td class="text-center" th:text="${prod.prodNm}"></td>
+										<td class="text-center" th:text="${prod.prodCd}"></td>
+										<td class="text-center" th:text="${prod.prodPrice}"></td>
+										<td class="text-center" th:text="${prod.productQuantity}"></td>
 										<td class="text-center"></td>
 										<td class="text-center"></td>
 									</tr>
