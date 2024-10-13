@@ -2,6 +2,8 @@ package com.han.admin.dto;
 
 import java.util.List;
 
+import com.han.admin.domain.ProdImg;
+
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -22,7 +24,7 @@ public class ProdInfoDTO {
 	
 	int		productQuantity;
 	
-	List<ProdImgDTO> prodImgs;
+	ProdImgDTO prodImgs;
 	
 	
 }

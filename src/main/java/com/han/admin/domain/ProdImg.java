@@ -7,6 +7,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
 import lombok.AccessLevel;
@@ -40,7 +41,7 @@ public class ProdImg {
 	@NotNull
 	private String dtImgPath;
 
-	@ManyToOne(fetch = FetchType.LAZY)
+	@OneToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "prod_info_id")
 	private ProdInfo prodInfo;
 
@@ -55,6 +56,40 @@ public class ProdImg {
 		this.imgPath = imgPath;
 		this.dtImgPath = imgDetailPath;
 		this.prodInfo = productInfo;
+	}
+	
+	/**
+	 * 상품 이미지 수정
+	 * 
+	 */
+	public void changeProdInfo(String prodNm, String imgNm, String dtImglNm, 
+			String imgPath, String dtImgPath) {
+		
+		/**
+		 * 기존의 값과 새로 들어온 값을 비교해서 저장
+		 * 
+		 */
+
+	    if (!this.prodNm.equals(prodNm)) {
+	        this.prodNm = prodNm;
+	    }
+
+	    if (!this.imgNm.equals(imgNm)) {
+	        this.imgNm = imgNm;
+	    }
+
+	    if (!this.dtImglNm.equals(dtImglNm)) {
+	        this.dtImglNm = dtImglNm;
+	    }
+
+	    if (!this.imgPath.equals(imgPath)) {
+	        this.imgPath = imgPath;
+	    }
+
+	    if (!this.dtImgPath.equals(dtImgPath)) {
+	        this.dtImgPath = dtImgPath;
+	    }
+		
 	}
 
 }

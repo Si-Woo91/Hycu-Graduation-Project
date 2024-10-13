@@ -1,15 +1,11 @@
 package com.han.admin.domain;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import jakarta.persistence.CascadeType;
-import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
 import jakarta.validation.constraints.NotNull;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -37,33 +33,68 @@ public class ProdInfo {
 	private String prodCd;
 
 	@NotNull
-	private int prdPrc; // 상품 가격
+	private int prodPrc; // 상품 가격
 
 	@NotNull
-	private int prdQnt; // 상품 수량
+	private int prodQnt; // 상품 수량
 
-	@OneToMany(mappedBy = "prodInfo", cascade = CascadeType.ALL)
-	private List<ProdImg> prodImgList;
+	@OneToOne(mappedBy = "prodInfo", cascade = CascadeType.ALL)
+	private ProdImg prodImg;
 
 	@Builder
-	public ProdInfo(Long id, String prodType, String prodNm, String prodCd, int prodPrice, int produtQuantity,
-			List<ProdImg> prodImgList) {
+	public ProdInfo(Long id, String prodType, String prodNm, String prodCd, int prodPrc, int prodQnt,
+			ProdImg prodImg) {
 
 		this.id = id;
 		this.prodType = prodType;
 		this.prodNm = prodNm;
 		this.prodCd = prodCd;
-		this.prdPrc = prodPrice;
-		this.prdQnt = produtQuantity;
-		this.prodImgList = prodImgList;
+		this.prodPrc = prodPrc;
+		this.prodQnt = prodQnt;
+		this.prodImg = prodImg;
 	}
 
 	public void addIntmImg(ProdImg prodImg) {
-		if (prodImgList == null) {
-			prodImgList = new ArrayList<>();
-		}
-		prodImgList.add(prodImg);
-		prodImg.setProdInfo(this);
+	    this.prodImg = prodImg;  // 단일 이미지 설정
+	    prodImg.setProdInfo(this);  // 양방향 관계 설정
 	}
 
+	
+	/**
+	 * 상품 수정
+	 * 
+	 */
+	public void changeProdInfo(String prodType, String prodNm, String prodCd, 
+			int prodPrc, int prodQnt, ProdImg prodImg) {
+		
+		/**
+		 * 기존의 값과 새로 들어온 값을 비교해서 저장
+		 * 
+		 */
+	    if (!this.prodType.equals(prodType)) {
+	        this.prodType = prodType;
+	    }
+
+	    if (!this.prodNm.equals(prodNm)) {
+	        this.prodNm = prodNm;
+	    }
+
+	    if (!this.prodCd.equals(prodCd)) {
+	        this.prodCd = prodCd;
+	    }
+
+	    if (this.prodPrc != prodPrc) {
+	        this.prodPrc = prodPrc;
+	    }
+
+	    if (this.prodQnt != prodQnt) {
+	        this.prodQnt = prodQnt;
+	    }
+
+	    if (this.prodImg != prodImg) {
+	        this.prodImg = prodImg;
+	    }
+		
+	}
+	
 }

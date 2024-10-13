@@ -1,0 +1,126 @@
+<style>
+	/* Hide number input spinner */
+	input[type=number]::-webkit-inner-spin-button,
+	input[type=number]::-webkit-outer-spin-button {
+		-webkit-appearance: none;
+		margin: 0;
+	}
+
+	input[type=number] {
+		-moz-appearance: textfield;
+	}
+
+	/* Image preview styling */
+	.img-preview {
+		max-width: 100%;
+		height: auto;
+		margin-bottom: 10px;
+	}
+</style>
+
+<body>
+	<div class="modal-header">
+		<h5 class="modal-title" id="regModalLabel">상품 상세</h5>
+		<button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="closeModal()">
+			<span aria-hidden="true">&times;</span>
+		</button>
+	</div>
+	<div class="modal-body">
+		<!-- 상품 상세 폼 -->
+		<div id="productDetailView">
+			<div class="form-group">
+				<label for="productTypeDetail">상품 종류</label>
+				<input type="text" class="form-control" id="productTypeDetail" th:value="${detailProdInfo.prodType}"
+					disabled>
+			</div>
+			<div class="form-group">
+				<label for="productNameDetail">상품명</label>
+				<input type="text" class="form-control" id="productNameDetail" th:value="${detailProdInfo.prodNm}"
+					disabled>
+			</div>
+			<div class="form-group">
+				<label for="productCodeDetail">상품코드</label>
+				<input type="text" class="form-control" id="productCodeDetail" th:value="${detailProdInfo.prodCd}"
+					disabled>
+			</div>
+			<div class="form-group">
+				<label for="productPriceDetail">가격</label>
+				<input type="number" class="form-control" id="productPriceDetail" th:value="${detailProdInfo.prodPrice}"
+					disabled>
+			</div>
+			<div class="form-group">
+				<label for="productQuantityDetail">재고 수량</label>
+				<input type="number" class="form-control" id="productQuantityDetail"
+					th:value="${detailProdInfo.productQuantity}" disabled>
+			</div>
+			<div class="form-group">
+				<label for="prodImgDetail">대표 이미지</label>
+				<img th:src="|/prodImg/${detailProdInfo.id}|" th:alt="${detailProdInfo.prodImgs.imgName}"
+					class="img-preview" />
+			</div>
+			<div class="form-group">
+				<label for="prodDetailImgDetail">상세 이미지</label>
+				<img th:src="|/prodDtImg/${detailProdInfo.id}|" th:alt="${detailProdInfo.prodImgs.imgDetailNm}"
+					class="img-preview" />
+			</div>
+		</div>
+
+		<!-- 수정 폼 -->
+		<div id="productEditView" style="display:none;">
+			<input type="hidden" id="productId" th:value="${detailProdInfo.id}">
+			<div class="form-group">
+				<label for="productType">상품종류</label>
+				<select class="form-control" id="productType">
+					<option value="electronics">가전제품</option>
+					<option value="mobile">모바일</option>
+					<option value="others">기타</option>
+				</select>
+			</div>
+			<div class="form-group">
+				<label for="productName">상품명</label>
+				<input type="text" class="form-control" id="productName" placeholder="상품명을 입력하세요">
+			</div>
+			<div class="form-group">
+				<label for="productCode">상품코드</label>
+				<input type="text" class="form-control" id="productCode" placeholder="상품코드를 입력하세요">
+			</div>
+			<div class="form-group">
+				<label for="productPrice">가격</label>
+				<input type="number" class="form-control" id="productPrice" placeholder="가격을 입력하세요">
+			</div>
+			<div class="form-group">
+				<label for="productQuantity">수량</label>
+				<div class="input-group quantity-input-group">
+					<div class="input-group-prepend">
+						<button type="button" class="btn btn-outline-secondary" onclick="decreaseQuantity()">-</button>
+					</div>
+					<input type="number" class="form-control text-center" id="productQuantity" value="1" min="1">
+					<div class="input-group-append">
+						<button type="button" class="btn btn-outline-secondary" onclick="increaseQuantity()">+</button>
+					</div>
+				</div>
+			</div>
+			<div class="form-group">
+				<label for="prodImg">대표 이미지 업로드</label>
+				<input type="file" class="form-control-file" id="prodImg" accept="image/*"
+					onchange="checkImageUpload('prodImg', 'hiddenProdImg')">
+				<!-- 기존 이미지 정보를 위한 hidden 필드 -->
+				<input type="hidden" id="hiddenProdImg" th:value="${detailProdInfo.prodImgs.imgName}">
+			</div>
+			<div class="form-group">
+				<label for="prodDetailImg">상세 이미지 업로드</label>
+				<input type="file" class="form-control-file" id="prodDetailImg" accept="image/*"
+					onchange="checkImageUpload('prodDetailImg', 'hiddenProdDetailImg')">
+				<!-- 기존 상세 이미지 정보를 위한 hidden 필드 -->
+				<input type="hidden" id="hiddenProdDetailImg" th:value="${detailProdInfo.prodImgs.imgDetailNm}">
+			</div>
+		</div>
+	</div>
+
+	<div class="modal-footer">
+		<button type="button" class="btn btn-primary" id="editSaveBtn" onclick="toggleEditMode()">수정</button>
+		<button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="closeModal()">닫기</button>
+	</div>
+
+	<script th:src="@{/js/admin.js}"></script>
+</body>
