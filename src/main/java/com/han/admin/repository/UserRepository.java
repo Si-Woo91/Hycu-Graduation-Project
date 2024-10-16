@@ -11,6 +11,10 @@ import org.springframework.stereotype.Repository;
 
 import com.han.admin.domain.UserInfo;
 
+/**
+ * 사용자 repository
+ * 
+ */
 @Repository
 public interface UserRepository extends JpaRepository<UserInfo, Long>, PagingAndSortingRepository<UserInfo, Long>{
 	
@@ -35,12 +39,12 @@ public interface UserRepository extends JpaRepository<UserInfo, Long>, PagingAnd
                    "SELECT u.*, ROWNUM AS rnum " +
                    "FROM ( " +
                    "SELECT * FROM user_info " +
-                   "WHERE user_nm LIKE %:userNm% " +
-                   "ORDER BY user_id " +
+                   "WHERE user_nm LIKE %:keyword% " +
+                   "ORDER BY id " +
                    ") u " +
                    "WHERE ROWNUM <= :endRow) " +
                    "WHERE rnum > :startRow", nativeQuery = true)
-    List<UserInfo> findByUserNmContainingWithPagination(@Param("userNm") String userNm,
+    List<UserInfo> findByUserNmContainingWithPagination(@Param("keyword") String keyword,
                                                        @Param("startRow") int startRow,
                                                        @Param("endRow") int endRow);
 	
@@ -55,7 +59,7 @@ public interface UserRepository extends JpaRepository<UserInfo, Long>, PagingAnd
             "SELECT u.*, ROWNUM AS rnum " +
             "FROM ( " +
             "SELECT * FROM user_info " +
-            "ORDER BY user_id " +
+            "ORDER BY id " +
             ") u " +
             "WHERE ROWNUM <= :endRow) " +
             "WHERE rnum > :startRow", nativeQuery = true)
@@ -69,6 +73,15 @@ public interface UserRepository extends JpaRepository<UserInfo, Long>, PagingAnd
      */
     @Query("SELECT COUNT(u) FROM UserInfo u")
     long countTotalUsers();
+    
+    
+    /**
+     * 검색어에 해당하는 사용자 수 카운트
+     * @param keyword
+     * @return
+     */
+    @Query("SELECT COUNT(u) FROM UserInfo u WHERE u.userNm LIKE %:keyword%")
+    long countByUserNmContaining(@Param("keyword")String keyword);
     
     
     /**

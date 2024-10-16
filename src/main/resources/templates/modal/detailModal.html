@@ -1,3 +1,5 @@
+<!-- 상품 상세 modal -->
+
 <style>
 	/* Hide number input spinner */
 	input[type=number]::-webkit-inner-spin-button,
@@ -26,7 +28,7 @@
 		</button>
 	</div>
 	<div class="modal-body">
-		<!-- 상품 상세 폼 -->
+		<!-- 상품 상세 폼 start -->
 		<div id="productDetailView">
 			<div class="form-group">
 				<label for="productTypeDetail">상품 종류</label>
@@ -64,8 +66,8 @@
 					class="img-preview" />
 			</div>
 		</div>
-
-		<!-- 수정 폼 -->
+		<!-- 상품 상세 폼 end -->
+		<!-- 수정 폼 start -->
 		<div id="productEditView" style="display:none;">
 			<input type="hidden" id="productId" th:value="${detailProdInfo.id}">
 			<div class="form-group">
@@ -115,6 +117,7 @@
 				<input type="hidden" id="hiddenProdDetailImg" th:value="${detailProdInfo.prodImgs.imgDetailNm}">
 			</div>
 		</div>
+		<!-- 수정 폼 end -->
 	</div>
 
 	<div class="modal-footer">
@@ -122,5 +125,5 @@
 		<button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="closeModal()">닫기</button>
 	</div>
 
-	<script th:src="@{/js/admin.js}"></script>
+	<script th:src="@{/js/prodMNG.js}"></script>
 </body>

@@ -31,7 +31,8 @@ public class LoginController {
 		logger.debug("로그인 페이지");
 
 		// 로그인이 되어 있을시 admin 페이지로 이동
-		if(!CustomUtill.isNullOrEmpty(principal)) {
+		if(!CustomUtill.isNullOrEmpty(principal))
+		{
 			
 			return "redirect:/userList";
 		}

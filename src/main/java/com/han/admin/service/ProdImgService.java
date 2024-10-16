@@ -15,7 +15,7 @@ import com.han.admin.utill.CustomUtill;
 import lombok.RequiredArgsConstructor;
 
 /**
- * 상품 이미지 service
+ * 상품 이미지 관련 service
  * 
  */
 @RequiredArgsConstructor

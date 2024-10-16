@@ -1,5 +1,9 @@
 package com.han.admin.dto;
 
+/**
+ * 응답 메세지
+ * 
+ */
 public class ResponseMessageDTO {
 	
     private boolean success;

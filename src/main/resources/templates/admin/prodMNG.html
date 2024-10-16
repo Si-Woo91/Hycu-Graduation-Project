@@ -8,6 +8,25 @@
 			<article>
 				<div class="content" id="content" style="margin-top: 20px;">
 					<div class="admin-container member-list">
+						<!-- search-bar start -->
+						<div id="board-search" style="padding-bottom: 20px;">
+							<div class="container">
+								<div class="row justify-content-center">
+									<div class="col-md-6">
+										<div class="input-group" style="width: 100%;">
+											<input type="text" class="form-control" id="keyword" name="keyword"
+												th:value="${keyword}" placeholder="회원 이름을 입력해주세요.">
+											<!-- 검색 버튼 start -->
+											<div class="input-group-append" style="margin-left: 10px;">
+												<button type="button" class="btn btn-primary" id="ProdsearchBtn">검색</button>
+											</div>
+											<!-- 검색 버튼 end -->
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<!-- search-bar end -->
 						<div class="table-responsive">
 							<table class="table table-hover table-bordered" style="margin: 0 auto; width: 80%;">
 								<thead class="thead-light">
@@ -23,7 +42,7 @@
 									</tr>
 								</thead>
 								<tbody>
-									<tr th:each="prod : ${prodInfo}">
+									<tr th:each="prod : ${prodInfoPage}">
 										<td class="text-center">
 											<input type="checkbox" class="prodCheckbox" th:value="${prod.id}" />
 										</td>
@@ -46,25 +65,40 @@
 								<button class="btn btn-danger mx-2 text-white" id="prodDelBtn">삭제</button>
 							</div>
 						</div>
+						<!-- 페이지 네비게이션 start-->
+						<nav aria-label="Page navigation" class="mt-4" th:if="${!noProds && totalPages > 1}">
+						    <ul class="pagination justify-content-center m-0">
+						        <li class="page-item" th:classappend="${currentPage == 0} ? 'disabled'">
+						            <a class="page-link" th:href="@{/prodList(page=${currentPage - 1}, size=${size}, keyword=${keyword})}">이전</a>
+						        </li>
+						        <li class="page-item" th:each="pageNum : ${#numbers.sequence(0, totalPages - 1)}"
+						            th:classappend="${pageNum == currentPage} ? 'active'">
+						            <a class="page-link" th:href="@{/prodList(page=${pageNum}, size=${size}, keyword=${keyword})}" th:text="${pageNum + 1}"></a>
+						        </li>
+						        <li class="page-item" th:classappend="${currentPage == totalPages - 1} ? 'disabled'">
+						            <a class="page-link" th:href="@{/prodList(page=${currentPage + 1}, size=${size}, keyword=${keyword})}">다음</a>
+						        </li>
+						    </ul>
+						</nav>
+						<!-- 페이지 네비게이션 end -->
 					</div>
 				</div>
 			</article>
 		</section>
 
-		<!-- 모달 -->
+		<!-- modal start -->
 		<div class="modal fade" id="regModal" tabindex="-1" role="dialog" aria-labelledby="regModalLabel"
 			aria-hidden="true">
 			<div class="modal-dialog" role="document">
 				<div class="modal-content">
-
 				</div>
 			</div>
 		</div>
-
+		<!-- modal end-->
 
 	</th:block>
 	<th:block layout:fragment="script">
-		<script th:src="@{/js/admin.js}"></script>
+		<script th:src="@{/js/prodMNG.js}"></script>
 	</th:block>
 </body>
 

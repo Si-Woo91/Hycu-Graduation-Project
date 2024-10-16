@@ -17,6 +17,10 @@ import com.han.admin.utill.CustomUtill;
 
 import lombok.RequiredArgsConstructor;
 
+/**
+ * 사용자 관련 service
+ * 
+ */
 @RequiredArgsConstructor
 @Service
 public class UserService {
@@ -91,8 +95,29 @@ public class UserService {
 	    
 	    int startRow = page * size; // 시작 행
 	    int endRow = startRow + size; // 종료 행
-
-	    List<UserInfo> userList = userRepository.findUserInfoWithPagination(startRow, endRow);
+	    
+	    List<UserInfo> userList;
+	    
+	    // 총 데이터 수
+	    long totalElements;
+	    
+	    // 키워드가 없을 경우
+	    if(CustomUtill.isNullOrEmpty(keyword)) {
+	    	
+	    	userList = userRepository.findUserInfoWithPagination(startRow, endRow);
+	    	totalElements = userRepository.count();
+	    	
+	    }
+	    // 키워드가 있을 경우
+	    else
+	    {
+	    	
+	    	logger.debug("키워드 o");
+	    	userList = userRepository.findByUserNmContainingWithPagination(keyword, startRow, endRow);
+	    	
+	    	totalElements = userRepository.countByUserNmContaining(keyword);
+	    	
+	    }
 	    
 	    List<UserInfoDTO> outList = new ArrayList<>();
 	    
@@ -120,7 +145,7 @@ public class UserService {
 		    }
 	    }
 	    
-	    long totalElements = userRepository.count(); // 총 데이터 수
+	   
 	    logger.debug("확인222");
 	    
 	    return new PageImpl<>(outList, pageable, totalElements); // Page 객체 반환

@@ -1,9 +1,6 @@
 package com.han.admin.service;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 import org.slf4j.Logger;
@@ -12,9 +9,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.han.admin.domain.ProdImg;
 import com.han.admin.dto.ProdImgDTO;
-import com.han.admin.repository.ImgRepository;
 import com.han.admin.utill.CustomUtill;
 
 import lombok.RequiredArgsConstructor;

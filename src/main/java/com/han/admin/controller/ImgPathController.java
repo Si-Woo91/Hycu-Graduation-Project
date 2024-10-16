@@ -1,6 +1,5 @@
 package com.han.admin.controller;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.Optional;
 
@@ -15,10 +14,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.han.admin.domain.ProdImg;
-import com.han.admin.domain.ProdInfo;
-import com.han.admin.service.ConvertImgFormatService;
 import com.han.admin.service.ProdImgService;
-import com.han.admin.utill.ResourceNotFoundException;
 
 import lombok.RequiredArgsConstructor;
 

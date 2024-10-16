@@ -7,6 +7,9 @@ import java.util.Optional;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -20,6 +23,10 @@ import com.han.admin.utill.CustomUtill;
 
 import lombok.RequiredArgsConstructor;
 
+/**
+ * 상품 관련 service
+ * 
+ */
 @RequiredArgsConstructor
 @Service
 public class ProdService {
@@ -166,6 +173,88 @@ public class ProdService {
 
 	    return outDTOList;
 	}
+	
+	
+	public Page<ProdInfoDTO> getProdInfoPage(String keyword, Pageable pageable) {
+		
+	    int page = pageable.getPageNumber(); // 현재 페이지
+	    int size = pageable.getPageSize(); // 페이지당 데이터 수
+	    
+	    int startRow = page * size; // 시작 행
+	    int endRow = startRow + size; // 종료 행
+	    
+	    List<ProdInfo> prodList;
+	   
+	    // 총 데이터 수
+	    long totalElements;
+	    
+	    // 키워드가 없을 경우
+	    if(CustomUtill.isNullOrEmpty(keyword)) {
+	    	
+	    	prodList = prodRepository.findProdInfoWithPagination(startRow, endRow);
+	    	totalElements = prodRepository.count();
+	    	
+	    }
+	    // 키워드가 있을 경우
+	    else
+	    {
+	    	
+	    	logger.debug("키워드 o");
+	    	prodList = prodRepository.findByProdNmContainingWithPagination(keyword, startRow, endRow);
+	    	
+	    	totalElements = prodRepository.countByUserNmContaining(keyword);
+	    	
+	    }
+	    
+	    List<ProdInfoDTO> outList = new ArrayList<>();
+	    
+	    if (prodList == null) {
+
+	    	return null;
+	    
+	    }
+	    else
+	    {
+		    for(ProdInfo inProd : prodList) {
+		    	
+		    	ProdInfoDTO inDto = new ProdInfoDTO();
+		    	
+		    	inDto.setId(inProd.getId());
+		    	inDto.setProdType(inProd.getProdType());
+		    	inDto.setProdNm(inProd.getProdNm());
+		    	inDto.setProdCd(inProd.getProdCd());
+		        inDto.setProdPrice(endRow);
+		        inDto.setProductQuantity(endRow);
+		    	
+		        
+		        if (!CustomUtill.isNullOrEmpty(inProd.getProdImg())) {
+		        	
+		        	ProdImgDTO inImgDTO = new ProdImgDTO();
+		            
+		            inImgDTO.setId(inProd.getProdImg().getId());
+		            inImgDTO.setProdNm(inProd.getProdImg().getProdNm());
+		            inImgDTO.setImgName(inProd.getProdImg().getImgNm());
+		            inImgDTO.setImgPath(inProd.getProdImg().getImgPath());
+		            inImgDTO.setImgDetailNm(inProd.getProdImg().getDtImglNm());
+		            inImgDTO.setImgDetailPath(inProd.getProdImg().getDtImgPath());
+
+		            // 이미지 세팅
+		            inDto.setProdImgs(inImgDTO);
+		        
+		        }
+		        	
+		        	outList.add(inDto);
+		    }
+		    
+	    }
+	    
+	   
+	    logger.debug("상품 조회 서비스 처리");
+	    
+	    return new PageImpl<>(outList, pageable, totalElements); // Page 객체 반환
+	}
+	
+	
 	
 	
 	/**

@@ -1,11 +1,6 @@
 package com.han.admin.dto;
 
-import java.util.List;
-
-import com.han.admin.domain.ProdImg;
-
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter

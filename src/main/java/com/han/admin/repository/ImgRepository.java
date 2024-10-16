@@ -7,6 +7,10 @@ import org.springframework.stereotype.Repository;
 
 import com.han.admin.domain.ProdImg;
 
+/**
+ * 상품 이미지 repository
+ * 
+ */
 @Repository
 public interface ImgRepository extends JpaRepository<ProdImg, Long>{
 

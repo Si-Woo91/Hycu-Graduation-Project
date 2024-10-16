@@ -13,7 +13,7 @@
 							<div class="container">
 								<div class="row justify-content-center">
 									<div class="col-md-6">
-										<div class="input-group" style="width: 100%;"> <!-- 입력 상자의 너비를 300px로 설정 -->
+										<div class="input-group" style="width: 100%;">
 											<input type="text" class="form-control" id="keyword" name="keyword"
 												th:value="${keyword}" placeholder="회원 이름을 입력해주세요.">
 											<!-- 검색 버튼 start -->
@@ -27,7 +27,6 @@
 							</div>
 						</div>
 						<!-- search-bar end -->
-
 						<!-- 회원 목록 테이블 start -->
 						<div class="table-responsive">
 							<table class="table table-hover table-bordered" style="margin: 0 auto; width: 80%;">
@@ -69,37 +68,30 @@
 							<!-- 삭제 버튼 end -->
 						</div>
 						<!-- 회원 목록 테이블 end -->
-
 						<!-- 페이지 네비게이션 start-->
-						<nav aria-label="Page navigation" class="mt-4" th:if="${!noUsers}">
-							<ul class="pagination justify-content-center m-0">
-								<li class="page-item" th:classappend="${currentPage == 0} ? 'disabled'">
-									<a class="page-link"
-										th:href="@{/admin(page=${currentPage - 1}, size=${size}, keyword=${keyword})}">이전</a>
-								</li>
-								<li class="page-item" th:each="pageNum : ${#numbers.sequence(0, totalPages - 1)}"
-									th:classappend="${pageNum == currentPage} ? 'active'">
-									<a class="page-link"
-										th:href="@{/admin(page=${pageNum}, size=${size}, keyword=${keyword})}"
-										th:text="${pageNum + 1}"></a>
-								</li>
-								<li class="page-item" th:classappend="${currentPage == totalPages - 1} ? 'disabled'">
-									<a class="page-link"
-										th:href="@{/admin(page=${currentPage + 1}, size=${size}, keyword=${keyword})}">다음</a>
-								</li>
-							</ul>
+						<nav aria-label="Page navigation" class="mt-4" th:if="${!noUsers && totalPages > 1}">
+						    <ul class="pagination justify-content-center m-0">
+						        <li class="page-item" th:classappend="${currentPage == 0} ? 'disabled'">
+						            <a class="page-link" th:href="@{/userList(page=${currentPage - 1}, size=${size}, keyword=${keyword})}">이전</a>
+						        </li>
+						        <li class="page-item" th:each="pageNum : ${#numbers.sequence(0, totalPages - 1)}"
+						            th:classappend="${pageNum == currentPage} ? 'active'">
+						            <a class="page-link" th:href="@{/userList(page=${pageNum}, size=${size}, keyword=${keyword})}" th:text="${pageNum + 1}"></a>
+						        </li>
+						        <li class="page-item" th:classappend="${currentPage == totalPages - 1} ? 'disabled'">
+						            <a class="page-link" th:href="@{/userList(page=${currentPage + 1}, size=${size}, keyword=${keyword})}">다음</a>
+						        </li>
+						    </ul>
 						</nav>
 						<!-- 페이지 네비게이션 end -->
-
 					</div>
 				</div>
 				<!-- 회원 관리 페이지 end -->
-
 			</article>
 		</section>
 	</th:block>
 	<th:block layout:fragment="script">
-		<script th:src="@{/js/admin.js}"></script>
+		<script th:src="@{/js/userMNG.js}"></script>
 	</th:block>
 
 </html>

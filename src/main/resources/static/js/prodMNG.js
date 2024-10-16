@@ -1,22 +1,31 @@
 var csrfToken = $('meta[name="_csrf"]').attr('content');
 var csrfHeader = $('meta[name="_csrf_header"]').attr('content');
 
+/* 상품관리 start */
 
-/* 회원관리 start */
-
-// 검색
 $(document).ready(function() {
-	$('#searchBtn').click(function() {
+	
+	// 검색
+	$(document).on('click', '#ProdsearchBtn', function() {
 		console.log("검색");
 		var keyword = $('#keyword').val(); // 입력된 검색어
 
+		// 페이지 번호를 명시적으로 설정 (기본값 0)
+		var page = 0;
+
 		// AJAX 호출
 		$.ajax({
-			url: '/search',
+			url: '/searchProds',
 			type: 'GET',
-			data: { keyword: keyword },
-			success: function(data) {
-				console.log('검색 결과:', data);
+			headers: { [csrfHeader]: csrfToken },
+			data: { keyword: keyword, page: page },
+			success: function(res) {
+
+				console.log("검색 기능 성공");
+				console.log('검색 결과:', res);
+
+				$('#content').html(res);
+
 			},
 			error: function(xhr, status, error) {
 				console.error('검색 중 오류 발생:', error);
@@ -24,66 +33,8 @@ $(document).ready(function() {
 			}
 		});
 	});
-
-	// 회원 삭제 ajax
-	$('#userDelBtn').on('click', function() {
-		var selectedIds = getSelectedUserIds();
-
-		console.log("selectedIds :: " + selectedIds);
-
-		if (selectedIds.length === 0) {
-			alert('삭제할 대상을 체크해주세요.');
-			return;
-		}
-
-		// 사용자에게 삭제 확인 요청
-		if (confirm('선택한 사용자를 삭제하시겠습니까?')) {
-
-			var reqData = selectedIds.map(id => ({ id: id }));
-
-			$.ajax({
-				url: 'deleteUsers',
-				type: 'POST',
-				contentType: 'application/json',
-				headers: { [csrfHeader]: csrfToken },
-				data: JSON.stringify(reqData),
-				success: function(res) {
-					if (res.success) {
-
-						location.reload();
-
-					} else {
-
-						alert('삭제에 실패했습니다.');
-
-					}
-				},
-
-				error: function() {
-					alert('서버 오류가 발생했습니다.'); // AJAX 실패
-				}
-			});
-		}
-	});
-
-	// 유저 체크박스 데이터 받아옴
-	function getSelectedUserIds() {
-
-		var selectedIds = [];
-
-		$('.userCheckbox:checked').each(function() { // 체크박스 선택
-			selectedIds.push($(this).val()); // 체크된 체크박스의 값을 배열에 추가
-		});
-
-		console.log("확인 :: " + selectedIds);
-
-		return selectedIds;
-	}
-
-	/* 회원관리 end */
-
-
-	/* 상품관리 start */
+	
+	
 
 	// 상품 등록
 	$('#saveBtn').click(function() {
@@ -98,7 +49,7 @@ $(document).ready(function() {
 
 		if (!productType || !productName || !productCode || !productPrice || !productQuantity || !prodImg || !prodDetailImg) {
 			alert('모든 항목을 입력해주세요.');
-			return; // 필수 입력값이 빠졌을 경우 요청을 중단
+			return; // 필수 입력값이 빠졌을 경우 요청 중단
 		}
 
 		// FormData 객체를 생성
@@ -111,7 +62,6 @@ $(document).ready(function() {
 		formData.append('prodImg', prodImg);
 		formData.append('prodDetailImg', prodDetailImg);
 
-		// AJAX
 		$.ajax({
 			url: '/saveProduct',
 			type: 'POST',
@@ -119,12 +69,11 @@ $(document).ready(function() {
 			headers: { [csrfHeader]: csrfToken },
 			contentType: false,
 			processData: false,
-			success: function(response) {
+			success: function(res) {
 
 				// 성공
 				alert('상품이 성공적으로 등록되었습니다!');
 				closeModal();
-
 				location.reload();
 			},
 			error: function(xhr, status, error) {
@@ -134,7 +83,6 @@ $(document).ready(function() {
 			}
 		});
 	});
-
 
 	// 상품 삭제 ajax
 	$('#prodDelBtn').on('click', function() {
@@ -177,9 +125,6 @@ $(document).ready(function() {
 		}
 	});
 
-
-
-	/* 상품관리 end */
 });
 
 // 상품 체크박스 
@@ -196,20 +141,20 @@ function getSelectedProdIds() {
 	return selectedIds;
 }
 
-
 // 모달 창 닫기
 function closeModal() {
 	$('#regModal').modal('hide');
 }
+
 // 상품 등록 모달창
 function regProdModal() {
 	$.ajax({
 		url: '/modal/regModal',
 		type: 'GET',
-		success: function(data) {
+		success: function(res) {
 
-			console.log('가져온 데이터:', data);
-			$('#regModal .modal-content').html(data);
+			console.log('가져온 데이터:', res);
+			$('#regModal .modal-content').html(res);
 			$('#regModal').modal('show');
 		},
 		error: function(xhr, status, error) {
@@ -264,10 +209,6 @@ function decreaseQuantity() {
 		quantityInput.value = currentValue - 1;
 	}
 }
-
-
-
-/* ------------------------------------------------------------- */
 
 // 파일이 선택되지 않으면 기존 값 유지
 function checkImageUpload(fileInputId, hiddenInputId) {
@@ -330,19 +271,25 @@ function saveProductDetails() {
 	var prodImgFile = document.getElementById("prodImg").files[0];
 	var prodDetailImgFile = document.getElementById("prodDetailImg").files[0];
 
-	if (prodImgFile) {
+	//상품 대표이미지
+	if (prodImgFile) 
+	{
 		formData.append("prodImg", prodImgFile);
-	} else {
+	} 
+	else 
+	{
 		formData.append("prodImg", document.getElementById("hiddenProdImg").value);  // 기존 파일 이름을 보냄
 	}
 
+	
+	// 상품 상세 이미지
 	if (prodDetailImgFile) {
 		formData.append("prodDetailImg", prodDetailImgFile);
 	} else {
 		formData.append("prodDetailImg", document.getElementById("hiddenProdDetailImg").value);  // 기존 파일 이름을 보냄
 	}
 
-
+	// 수정 ajax
 	$.ajax({
 		url: '/updateProd',
 		type: 'POST',
@@ -350,7 +297,7 @@ function saveProductDetails() {
 		processData: false, 
 		contentType: false, 
 		headers: { [csrfHeader]: csrfToken },
-		success: function(response) {
+		success: function(res) {
 
 			alert('상품이 성공적으로 수정되었습니다!');
 			closeModal();
@@ -365,6 +312,4 @@ function saveProductDetails() {
 	});
 }
 
-
-
-
+	/* 상품관리 end */

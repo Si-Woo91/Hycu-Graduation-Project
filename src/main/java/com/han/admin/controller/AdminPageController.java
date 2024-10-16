@@ -23,7 +23,6 @@ import com.han.admin.dto.UserInfoDTO;
 import com.han.admin.service.ConvertImgFormatService;
 import com.han.admin.service.ProdService;
 import com.han.admin.service.UserService;
-import com.han.admin.utill.CustomStringUtill;
 import com.han.admin.utill.CustomUtill;
 
 import org.springframework.ui.Model;
@@ -58,19 +57,23 @@ public class AdminPageController {
 	public String getUsersMNG(@RequestParam(name = "keyword", required = false) String keyword,
 			@RequestParam(name = "page", defaultValue = "0") int page,
 			@RequestParam(name = "size", defaultValue = "10") int size,
-			@RequestParam(name = "tab", required = false) String tab, Model model) {
+			Model model) {
 
+		// 페이징 처리 관련
 		Pageable pageable = PageRequest.of(page, size);
 		Page<UserInfoDTO> userInfoPage = userService.getCustInfoPage(keyword, pageable);
 
-		logger.debug("tab :: " + tab);
-
 		// 사용자 정보가 없을 경우 페이지 처리를 위한 추가 로직
 		boolean noUsers;
-		if (CustomUtill.isNullOrEmpty(userInfoPage.getContent())) {
+		
+		if (CustomUtill.isNullOrEmpty(userInfoPage.getContent())) 
+		{
+		
 			noUsers = true;
 
-		} else {
+		} 
+		else 
+		{
 
 			noUsers = false;
 
@@ -83,9 +86,61 @@ public class AdminPageController {
 		model.addAttribute("currentPage", userInfoPage.getNumber());
 		model.addAttribute("totalPages", userInfoPage.getTotalPages());
 		model.addAttribute("keyword", keyword);
-		model.addAttribute("tab", tab);
 
 		return "admin/userMNG";
+	}
+	
+	/**
+	 * 회원 검색 기능
+	 * 
+	 * @param keyword
+	 * @param page
+	 * @param size
+	 * @param model
+	 * @return
+	 */
+	@GetMapping(value = "/searchUsers")
+	public String getSearchUsers(@RequestParam(name = "keyword", required = false) String keyword,
+			@RequestParam(name = "page", defaultValue = "0") int page,
+			@RequestParam(name = "size", defaultValue = "10") int size,
+			Model model) {
+
+		logger.debug("검색 기능");
+		logger.debug("키워드  ::: " + keyword);
+		
+		// 페이징 처리
+		Pageable pageable = PageRequest.of(page, size);
+		logger.debug("pageable :: " + pageable.getPageSize());
+		
+		Page<UserInfoDTO> userInfoPage = userService.getCustInfoPage(keyword, pageable);
+
+		logger.debug(" userInfoPage.getTotalPages() :: " +  userInfoPage.getTotalPages());
+
+		// 사용자 정보가 없을 경우 페이지 처리를 위한 추가 로직
+		boolean noUsers;
+		
+		if (CustomUtill.isNullOrEmpty(userInfoPage.getContent())) 
+		{
+			
+			noUsers = true;
+
+		} 
+		else 
+		{
+
+			noUsers = false;
+			
+		}
+
+		logger.debug("noUsers :: " + noUsers);
+
+		model.addAttribute("noUsers", noUsers);
+		model.addAttribute("userInfoPage", userInfoPage.getContent());
+		model.addAttribute("currentPage", userInfoPage.getNumber());
+		model.addAttribute("totalPages", userInfoPage.getTotalPages());
+		model.addAttribute("keyword", keyword);
+
+		return "admin/userMNG :: #content";
 	}
 
 	/**
@@ -95,13 +150,93 @@ public class AdminPageController {
 	 * @return
 	 */
 	@GetMapping(value = "/prodList")
-	public String getProdMNG(Model model) {
+	public String getProdMNG(@RequestParam(name = "keyword", required = false) String keyword,
+			@RequestParam(name = "page", defaultValue = "0") int page,
+			@RequestParam(name = "size", defaultValue = "5") int size,
+			Model model) {
 
-		List<ProdInfoDTO> inList = prodService.getPordList();
+		Pageable pageable = PageRequest.of(page, size);
+		logger.debug("pageable :: " + pageable.getPageSize());
+		
+		Page<ProdInfoDTO> prodInfoPage = prodService.getProdInfoPage(keyword, pageable);
 
-		model.addAttribute("prodInfo", inList);
+		// 상품 정보가 없을 경우 페이지 처리를 위한 추가 로직
+		boolean noProds;
+		
+		if (CustomUtill.isNullOrEmpty(prodInfoPage.getContent())) 
+		{
+			
+			noProds = true;
+		
+		}
+		else 
+		{
+		
+			noProds = false;	
+		
+		}
+
+		logger.debug("noUsers :: " + noProds);
+
+		logger.debug("prodInfoPage.getContent() :: " + prodInfoPage.getContent().get(0).getProdNm());
+		logger.debug("prodInfoPage.getContent() :: " + prodInfoPage.getContent().get(0).getProdCd());
+		logger.debug("prodInfoPage.getContent() :: " + prodInfoPage.getContent().get(0).getProdType());
+
+		model.addAttribute("noProds", noProds);
+		model.addAttribute("prodInfoPage", prodInfoPage.getContent());
+		model.addAttribute("currentPage", prodInfoPage.getNumber());
+		model.addAttribute("totalPages", prodInfoPage.getTotalPages());
+		model.addAttribute("keyword", keyword);
 
 		return "admin/prodMNG";
+	}
+	
+	/**
+	 * 상품 검색
+	 * 
+	 * @param keyword
+	 * @param page
+	 * @param size
+	 * @param model
+	 * @return
+	 */
+	@GetMapping(value = "/searchProds")
+	public String getSearchPrdos(@RequestParam(name = "keyword", required = false) String keyword,
+			@RequestParam(name = "page", defaultValue = "0") int page,
+			@RequestParam(name = "size", defaultValue = "5") int size,
+			Model model) {
+
+		logger.debug("검색 기능");
+		logger.debug("키워드  ::: " + keyword);
+		
+		Pageable pageable = PageRequest.of(page, size);
+		logger.debug("pageable :: " + pageable.getPageSize());
+		
+		Page<ProdInfoDTO> prodInfoPage = prodService.getProdInfoPage(keyword, pageable);
+
+		logger.debug(" prodInfoPage.getTotalPages() :: " +  prodInfoPage.getTotalPages());
+
+		boolean noProds;
+		
+		if (CustomUtill.isNullOrEmpty(prodInfoPage.getContent())) 
+		{
+			noProds = true;
+
+		} 
+		else 
+		{
+			noProds = false;
+		}
+
+		logger.debug("noUsers :: " + noProds);
+
+		model.addAttribute("noProds", noProds);
+		model.addAttribute("prodInfoPage", prodInfoPage.getContent());
+		model.addAttribute("currentPage", prodInfoPage.getNumber());
+		model.addAttribute("totalPages", prodInfoPage.getTotalPages());
+		model.addAttribute("keyword", keyword);
+
+		return "admin/prodMNG :: #content";
 	}
 
 	/**
@@ -168,17 +303,21 @@ public class AdminPageController {
 		// 리스트에 받아온 id값을 저장
 		List<Long> ids = reqInDto.stream().map(UserInfoDTO::getId).toList();
 
-		if (ids == null || ids.isEmpty()) {
+		if (ids == null || ids.isEmpty()) 
+		{
 			return ResponseEntity.badRequest().body(new ResponseMessageDTO(false, "사용자 ID가 필요합니다."));
 		}
 
 		boolean success = userService.deleteUsers(ids);
 
-		if (success) {
+		if (success) 
+		{
 
 			return ResponseEntity.ok(new ResponseMessageDTO(true, "사용자가 성공적으로 삭제되었습니다."));
 
-		} else {
+		} 
+		else 
+		{
 
 			return ResponseEntity.status(500).body(new ResponseMessageDTO(false, "사용자 삭제에 실패했습니다."));
 
@@ -228,17 +367,21 @@ public class AdminPageController {
 
 		List<Long> ids = reqInDto.stream().map(ProdInfoDTO::getId).toList();
 
-		if (ids == null || ids.isEmpty()) {
+		if (ids == null || ids.isEmpty())
+		{
 			return ResponseEntity.badRequest().body(new ResponseMessageDTO(false, "상품 ID가 필요합니다."));
 		}
 
 		boolean success = prodService.deleteProds(ids);
 
-		if (success) {
+		if (success)
+		{
 
 			return ResponseEntity.ok(new ResponseMessageDTO(true, "상품이 성공적으로 삭제되었습니다."));
 
-		} else {
+		} 
+		else
+		{
 
 			return ResponseEntity.status(500).body(new ResponseMessageDTO(false, "상품 삭제에 실패했습니다."));
 
@@ -280,19 +423,24 @@ public class AdminPageController {
 			ProdImgDTO inImgDTO = new ProdImgDTO();
 			
 			// prodImg은 바꿈 prodDetailImg은 안바꿈
-			if(!CustomUtill.isNullOrEmpty(prodImg) && CustomUtill.isNullOrEmpty(prodDetailImg)) {
+			if(!CustomUtill.isNullOrEmpty(prodImg) && CustomUtill.isNullOrEmpty(prodDetailImg)) 
+			{
 				
 				inImgDTO = convertImgFormatService.setImges(prodImg, prodNm);
 				
 			}
+			
 			// prodImg은 안바꿈 prodDetailImg은 바꿈
-			else if (CustomUtill.isNullOrEmpty(prodImg) && !CustomUtill.isNullOrEmpty(prodDetailImg)) {
+			else if (CustomUtill.isNullOrEmpty(prodImg) && !CustomUtill.isNullOrEmpty(prodDetailImg)) 
+			{
 				
 				inImgDTO = convertImgFormatService.setDtImges(prodDetailImg, prodNm);
 				
 			}
+			
 			// 둘다 바꿀 경우
-			else if(!CustomUtill.isNullOrEmpty(prodImg) && !CustomUtill.isNullOrEmpty(prodDetailImg)) {
+			else if(!CustomUtill.isNullOrEmpty(prodImg) && !CustomUtill.isNullOrEmpty(prodDetailImg))
+			{
 				
 				inImgDTO = convertImgFormatService.setAllImges(prodImg, prodDetailImg, prodNm);
 				
@@ -303,8 +451,9 @@ public class AdminPageController {
 
 			return ResponseEntity.ok("상품 정보가 업데이트되었습니다.");
 			
-		} catch (Exception e) {
-			
+		} 
+		catch (Exception e) 
+		{
 			return ResponseEntity.status(500).body("상품 정보 업데이트 중 오류가 발생했습니다.");
 		}
 

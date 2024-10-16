@@ -29,7 +29,7 @@ public class SecurityConfig {
 
                 .authorizeHttpRequests((authorizeRequests) ->
                         authorizeRequests
-                        		.requestMatchers("/userList").hasRole("ADMIN")
+                        		.requestMatchers("/userList", "/prodList").hasRole("ADMIN")
                                 .requestMatchers("/", "/js/**", "/css/**").permitAll()  // 권한 없는 모든 사용자 접근 가능
                                 .anyRequest().authenticated()
                 )
