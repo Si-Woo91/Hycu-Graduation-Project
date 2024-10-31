@@ -240,18 +240,6 @@ public class AdminPageController {
 	}
 
 	/**
-	 * qna관리 페이지
-	 * 
-	 * @param model
-	 * @return
-	 */
-	@GetMapping(value = "/qnaList")
-	public String getQNAMNG(Model model) {
-
-		return "admin/qnaMNG";
-	}
-
-	/**
 	 * 상품 등록 모달
 	 * 
 	 * @return
@@ -289,6 +277,7 @@ public class AdminPageController {
 //	---------------------------------------------------------------------------------------
 
 	/* postMapping Start */
+	
 	/**
 	 * 회원 삭제
 	 * 
