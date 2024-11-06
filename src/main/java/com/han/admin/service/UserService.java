@@ -18,7 +18,7 @@ import com.han.admin.utill.CustomUtill;
 import lombok.RequiredArgsConstructor;
 
 /**
- * 사용자 관련 service
+ * 회원 관련 service
  * 
  */
 @RequiredArgsConstructor
@@ -56,7 +56,7 @@ public class UserService {
 		
 		UserInfoDTO inDTO = new UserInfoDTO();
 		
-	    if (userInfo == null) {
+	    if (CustomUtill.isNullOrEmpty(userInfo)) {
 
 	    	return null; // 또는 새로운 UserInfoDTO 객체를 반환
 	    
@@ -66,14 +66,13 @@ public class UserService {
 	    	
 	    	logger.debug("userid :: " + userInfo.getUserId());
 	    	
-	        UserInfoDTO indto = new UserInfoDTO();
-	        indto.setId(userInfo.getId());
-	        indto.setUserId(userInfo.getUserId());
-	        indto.setUserNm(userInfo.getUserNm());
-	        indto.setBirth(userInfo.getBirth());
-	        indto.setUserSex(userInfo.getUserSex());
-	        indto.setUserAddress(userInfo.getUserAddress());
-	        indto.setCreateDate(userInfo.getCreateDate());
+	        inDTO.setId(userInfo.getId());
+	        inDTO.setUserId(userInfo.getUserId());
+	        inDTO.setUserNm(userInfo.getUserNm());
+	        inDTO.setBirth(userInfo.getBirth());
+	        inDTO.setUserSex(userInfo.getUserSex());
+	        inDTO.setUserAddress(userInfo.getUserAddress());
+	        inDTO.setCreateDate(userInfo.getCreateDate());
 	    }
 		
 		
@@ -121,7 +120,8 @@ public class UserService {
 	    
 	    List<UserInfoDTO> outList = new ArrayList<>();
 	    
-	    if (userList == null) {
+	    
+	    if (CustomUtill.isNullOrEmpty(userList)) {
 
 	    	return null;
 	    
@@ -144,9 +144,6 @@ public class UserService {
 		    	
 		    }
 	    }
-	    
-	   
-	    logger.debug("확인222");
 	    
 	    return new PageImpl<>(outList, pageable, totalElements); // Page 객체 반환
 	}

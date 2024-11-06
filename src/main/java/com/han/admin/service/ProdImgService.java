@@ -49,7 +49,7 @@ public class ProdImgService {
 		
 		logger.debug("이미지 수정을 위해 세팅");
 		
-		// ImgName은 바꿈 ImgDetailNm은 안바꿈
+		// 1. ImgName은 바꿈 ImgDetailNm은 안바꿈
 		if(!CustomUtill.isNullOrEmpty(inImgDTO.getImgName()) && CustomUtill.isNullOrEmpty(inImgDTO.getImgDetailNm())) {
 			
 			logger.debug("대표 이미지만 세팅");
@@ -58,7 +58,7 @@ public class ProdImgService {
 			
 			
 		}
-		// ImgName은 안바꿈 ImgDetailNm은 바꿈
+		// 2. ImgName은 안바꿈 ImgDetailNm은 바꿈
 		else if (CustomUtill.isNullOrEmpty(inImgDTO.getImgName()) && !CustomUtill.isNullOrEmpty(inImgDTO.getImgDetailNm())) {
 
 			logger.debug("상세 이미지만 세팅");
@@ -66,7 +66,7 @@ public class ProdImgService {
 			inImg.changeProdInfo(inImg.getProdNm(), inImg.getImgNm(), inImgDTO.getImgDetailNm(), inImg.getImgPath(), inImgDTO.getImgDetailPath());
 			
 		}
-		// 둘 다 바꿀 경우
+		// 3. 둘 다 바꿀 경우
 		else if(!CustomUtill.isNullOrEmpty(inImgDTO.getImgName()) && !CustomUtill.isNullOrEmpty(inImgDTO.getImgDetailNm())) {
 
 			logger.debug("이미지 모두 세팅");
@@ -74,7 +74,7 @@ public class ProdImgService {
 			inImg.changeProdInfo(inImg.getProdNm(), inImgDTO.getImgName(), inImgDTO.getImgDetailNm(), inImgDTO.getImgPath(), inImgDTO.getImgDetailPath());
 			
 		}
-		// 둘 다 안 바꿀 경우
+		// 4. 둘 다 안 바꿀 경우
 		else
 		{
 			

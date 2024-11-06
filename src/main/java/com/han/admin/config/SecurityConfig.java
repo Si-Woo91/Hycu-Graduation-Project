@@ -18,7 +18,6 @@ public class SecurityConfig {
 
     private final AuthenticationFailureHandler customFailureHandler;
     
-    //특정 HTTP 요청에 대한 웹 기반 보안 구성
     @Bean
     protected SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 
@@ -29,14 +28,14 @@ public class SecurityConfig {
 
                 .authorizeHttpRequests((authorizeRequests) ->
                         authorizeRequests
-                        		.requestMatchers("/userList", "/prodList").hasRole("ADMIN")
+                        		.requestMatchers("/userList", "/prodList").hasRole("ADMIN") // 'admin' 권한이 있는 사람만 접근 가능
                                 .requestMatchers("/", "/js/**", "/css/**").permitAll()  // 권한 없는 모든 사용자 접근 가능
                                 .anyRequest().authenticated()
                 )
                 .formLogin((formLogin) ->
                         formLogin
                         .loginPage("/") 
-                        .failureHandler(customFailureHandler)
+                        .failureHandler(customFailureHandler) // 로그인 실패시 핸들러
                         .usernameParameter("userId")
                         .defaultSuccessUrl("/userList", true) // 로그인 성공 시 이동할 URL
                 )

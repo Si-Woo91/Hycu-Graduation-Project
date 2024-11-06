@@ -132,49 +132,12 @@ public class ProdService {
 	
 	
 	/**
-	 * 상품 조회 service(전체)
+	 * 상품 조회
 	 * 
+	 * @param keyword
+	 * @param pageable
+	 * @return
 	 */
-	public List<ProdInfoDTO> getPordList() {
-
-	    List<ProdInfoDTO> outDTOList = new ArrayList<>();
-	    List<ProdInfo> inList = prodRepository.findAll();
-
-	    for (ProdInfo inEntity : inList) {
-
-	        ProdInfoDTO inDTO = new ProdInfoDTO();
-
-	        // 상품 세팅
-	        inDTO.setId(inEntity.getId());
-	        inDTO.setProdType(inEntity.getProdType());
-	        inDTO.setProdNm(inEntity.getProdNm());
-	        inDTO.setProdCd(inEntity.getProdCd());
-	        inDTO.setProdPrice(inEntity.getProdPrc());
-	        inDTO.setProductQuantity(inEntity.getProdQnt());
-
-	        // 각 상품의 이미지가 존재할때
-	        if (!CustomUtill.isNullOrEmpty(inEntity.getProdImg())) {
-	        	
-	            ProdImgDTO inImgDTO = new ProdImgDTO();
-	            
-	            inImgDTO.setId(inEntity.getProdImg().getId());
-	            inImgDTO.setProdNm(inEntity.getProdImg().getProdNm());
-	            inImgDTO.setImgName(inEntity.getProdImg().getImgNm());
-	            inImgDTO.setImgPath(inEntity.getProdImg().getImgPath());
-	            inImgDTO.setImgDetailNm(inEntity.getProdImg().getDtImglNm());
-	            inImgDTO.setImgDetailPath(inEntity.getProdImg().getDtImgPath());
-
-	            inDTO.setProdImgs(inImgDTO);
-	        }
-
-	        
-	        outDTOList.add(inDTO);
-	    }
-
-	    return outDTOList;
-	}
-	
-	
 	public Page<ProdInfoDTO> getProdInfoPage(String keyword, Pageable pageable) {
 		
 	    int page = pageable.getPageNumber(); // 현재 페이지
@@ -208,10 +171,9 @@ public class ProdService {
 	    
 	    List<ProdInfoDTO> outList = new ArrayList<>();
 	    
-	    if (prodList == null) {
-
+	    if (prodList == null) 
+	    {
 	    	return null;
-	    
 	    }
 	    else
 	    {
@@ -407,9 +369,6 @@ public class ProdService {
 		
 		// 이미지 수정시 기존 이미지 파일 삭제
 		prodImgService.deleteImgPath(oldMainImg, oldDtImg, newProdImg);
-		
-		
-		
 		
 	}
 		

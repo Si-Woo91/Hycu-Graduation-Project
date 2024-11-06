@@ -46,10 +46,17 @@ $(document).ready(function() {
 		var productQuantity = $('#productQuantity').val();
 		var prodImg = $('#prodImg')[0].files[0];
 		var prodDetailImg = $('#prodDetailImg')[0].files[0];
-
+		
+		// 상품 종류를 선택 하지 않았을 경우
+		if(productType == 'select'){
+			alert('상품 종류를 선택해주세요');
+			return;
+		}
+		
+		 // 필수 입력값이 빠졌을 경우 체크
 		if (!productType || !productName || !productCode || !productPrice || !productQuantity || !prodImg || !prodDetailImg) {
 			alert('모든 항목을 입력해주세요.');
-			return; // 필수 입력값이 빠졌을 경우 요청 중단
+			return;
 		}
 
 		// FormData 객체를 생성

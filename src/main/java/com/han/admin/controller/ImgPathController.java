@@ -18,7 +18,10 @@ import com.han.admin.service.ProdImgService;
 
 import lombok.RequiredArgsConstructor;
 
-
+/**
+ * 이미지경로 controller
+ * 
+ */
 @RequiredArgsConstructor
 @Controller
 public class ImgPathController {
@@ -27,6 +30,7 @@ public class ImgPathController {
 	
 	private final  ProdImgService prodImgService;
 	
+	// 이미지 경로
 	@Value("${img.dir}")
 	private String imgDir;
 	
@@ -43,7 +47,6 @@ public class ImgPathController {
 	public Resource getImage(@PathVariable("id") Long id) throws IOException {
 		
 		logger.debug("id :: " + id);
-		
 		logger.debug("상품 이미지 url 컨트롤러");
 		
 		Optional<ProdImg> prodImgs = prodImgService.findByProdInfo(id);

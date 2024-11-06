@@ -15,6 +15,10 @@ import com.han.admin.utill.CustomUtill;
 
 import lombok.RequiredArgsConstructor;
 
+/**
+ * 로그인 controller
+ * 
+ */
 @RequiredArgsConstructor
 @Controller
 public class LoginController {
@@ -38,11 +42,11 @@ public class LoginController {
 		}
 		
 		 //관리자 비밀번호 암호화
-		BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-		 
-		String encodedPassword = passwordEncoder.encode("1234");;
-		 
-		System.out.println("Encoded Password: " + encodedPassword);
+//		BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+//		 
+//		String encodedPassword = passwordEncoder.encode("1234");;
+//		 
+//		System.out.println("Encoded Password: " + encodedPassword);
 		
 		
 		logger.debug("err :: " + error);

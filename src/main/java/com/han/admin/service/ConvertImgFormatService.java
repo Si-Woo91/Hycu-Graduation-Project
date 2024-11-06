@@ -15,7 +15,7 @@ import com.han.admin.utill.CustomUtill;
 import lombok.RequiredArgsConstructor;
 
 /**
- * 이미지 파일 변환 서비스
+ * 이미지 파일 변환 service
  * 
  */
 @RequiredArgsConstructor

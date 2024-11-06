@@ -29,6 +29,10 @@ import org.springframework.ui.Model;
 
 import lombok.RequiredArgsConstructor;
 
+/**
+ * 회원관리, 상품관리 controller
+ * 
+ */
 @RequiredArgsConstructor
 @Controller
 public class AdminPageController {
@@ -54,10 +58,10 @@ public class AdminPageController {
 	 * @return
 	 */
 	@GetMapping(value = "/userList")
-	public String getUsersMNG(@RequestParam(name = "keyword", required = false) String keyword,
-			@RequestParam(name = "page", defaultValue = "0") int page,
-			@RequestParam(name = "size", defaultValue = "10") int size,
-			Model model) {
+	public String getUsersMNG(@RequestParam(name = "keyword", required = false) String keyword
+							, @RequestParam(name = "page", defaultValue = "0") int page
+							, @RequestParam(name = "size", defaultValue = "10") int size
+							, Model model) {
 
 		// 페이징 처리 관련
 		Pageable pageable = PageRequest.of(page, size);
@@ -100,10 +104,10 @@ public class AdminPageController {
 	 * @return
 	 */
 	@GetMapping(value = "/searchUsers")
-	public String getSearchUsers(@RequestParam(name = "keyword", required = false) String keyword,
-			@RequestParam(name = "page", defaultValue = "0") int page,
-			@RequestParam(name = "size", defaultValue = "10") int size,
-			Model model) {
+	public String getSearchUsers(@RequestParam(name = "keyword", required = false) String keyword
+								, @RequestParam(name = "page", defaultValue = "0") int page
+								, @RequestParam(name = "size", defaultValue = "10") int size
+								, Model model) {
 
 		logger.debug("검색 기능");
 		logger.debug("키워드  ::: " + keyword);
@@ -113,7 +117,6 @@ public class AdminPageController {
 		logger.debug("pageable :: " + pageable.getPageSize());
 		
 		Page<UserInfoDTO> userInfoPage = userService.getCustInfoPage(keyword, pageable);
-
 		logger.debug(" userInfoPage.getTotalPages() :: " +  userInfoPage.getTotalPages());
 
 		// 사용자 정보가 없을 경우 페이지 처리를 위한 추가 로직
@@ -131,7 +134,6 @@ public class AdminPageController {
 			noUsers = false;
 			
 		}
-
 		logger.debug("noUsers :: " + noUsers);
 
 		model.addAttribute("noUsers", noUsers);
@@ -150,10 +152,10 @@ public class AdminPageController {
 	 * @return
 	 */
 	@GetMapping(value = "/prodList")
-	public String getProdMNG(@RequestParam(name = "keyword", required = false) String keyword,
-			@RequestParam(name = "page", defaultValue = "0") int page,
-			@RequestParam(name = "size", defaultValue = "5") int size,
-			Model model) {
+	public String getProdMNG(@RequestParam(name = "keyword", required = false) String keyword
+							, @RequestParam(name = "page", defaultValue = "0") int page
+							, @RequestParam(name = "size", defaultValue = "5") int size
+							, Model model) {
 
 		Pageable pageable = PageRequest.of(page, size);
 		logger.debug("pageable :: " + pageable.getPageSize());
@@ -175,12 +177,7 @@ public class AdminPageController {
 			noProds = false;	
 		
 		}
-
 		logger.debug("noUsers :: " + noProds);
-
-		logger.debug("prodInfoPage.getContent() :: " + prodInfoPage.getContent().get(0).getProdNm());
-		logger.debug("prodInfoPage.getContent() :: " + prodInfoPage.getContent().get(0).getProdCd());
-		logger.debug("prodInfoPage.getContent() :: " + prodInfoPage.getContent().get(0).getProdType());
 
 		model.addAttribute("noProds", noProds);
 		model.addAttribute("prodInfoPage", prodInfoPage.getContent());
@@ -201,10 +198,10 @@ public class AdminPageController {
 	 * @return
 	 */
 	@GetMapping(value = "/searchProds")
-	public String getSearchPrdos(@RequestParam(name = "keyword", required = false) String keyword,
-			@RequestParam(name = "page", defaultValue = "0") int page,
-			@RequestParam(name = "size", defaultValue = "5") int size,
-			Model model) {
+	public String getSearchPrdos(@RequestParam(name = "keyword", required = false) String keyword
+								, @RequestParam(name = "page", defaultValue = "0") int page
+								, @RequestParam(name = "size", defaultValue = "5") int size
+								, Model model) {
 
 		logger.debug("검색 기능");
 		logger.debug("키워드  ::: " + keyword);
@@ -213,7 +210,6 @@ public class AdminPageController {
 		logger.debug("pageable :: " + pageable.getPageSize());
 		
 		Page<ProdInfoDTO> prodInfoPage = prodService.getProdInfoPage(keyword, pageable);
-
 		logger.debug(" prodInfoPage.getTotalPages() :: " +  prodInfoPage.getTotalPages());
 
 		boolean noProds;
@@ -227,7 +223,6 @@ public class AdminPageController {
 		{
 			noProds = false;
 		}
-
 		logger.debug("noUsers :: " + noProds);
 
 		model.addAttribute("noProds", noProds);
@@ -247,7 +242,7 @@ public class AdminPageController {
 	@GetMapping(value = "/modal/regModal")
 	public String getRegModal() {
 
-		logger.debug("확인");
+		logger.debug("등록 모달");
 		return "modal/regModal";
 	}
 
@@ -259,9 +254,10 @@ public class AdminPageController {
 	 * @return
 	 */
 	@GetMapping(value = "/modal/detailModal/{id}")
-	public String getDetailModal(@PathVariable("id") Long id, Model model) {
+	public String getDetailModal(@PathVariable("id") Long id
+								, Model model) {
 
-		logger.debug("확인");
+		logger.debug("상세 모달");
 
 		ProdInfoDTO inProdInfo = prodService.getProductById(id);
 
@@ -299,6 +295,7 @@ public class AdminPageController {
 
 		boolean success = userService.deleteUsers(ids);
 
+		// 삭제 성공 유무
 		if (success) 
 		{
 
@@ -324,18 +321,19 @@ public class AdminPageController {
 	 * @return
 	 */
 	@PostMapping("/saveProduct")
-	public ResponseEntity<String> saveProduct(@RequestParam("productType") String productType,
-			@RequestParam("productName") String productName, @RequestParam("productCode") String productCode,
-			@RequestParam("productPrice") int productPrice, @RequestParam("productQuantity") int productQuantity,
-			@RequestParam("prodImg") MultipartFile prodImg,
-			@RequestParam("prodDetailImg") MultipartFile prodDetailImg) {
+	public ResponseEntity<String> saveProduct(@RequestParam("productType") String productType
+											, @RequestParam("productName") String productName
+											, @RequestParam("productCode") String productCode
+											, @RequestParam("productPrice") int productPrice
+											, @RequestParam("productQuantity") int productQuantity
+											, @RequestParam("prodImg") MultipartFile prodImg
+											, @RequestParam("prodDetailImg") MultipartFile prodDetailImg) {
 
 		// 이미지 파일 세팅
 		ProdImgDTO inImgDTO = convertImgFormatService.setAllImges(prodImg, prodDetailImg, productName);
 
 		// 상품 dto 세팅
-		ProdInfoDTO inProdDTO = prodService.setProdDTO(productType, productName, productCode, productPrice,
-				productQuantity);
+		ProdInfoDTO inProdDTO = prodService.setProdDTO(productType, productName, productCode, productPrice, productQuantity);
 
 		// 상품 및 이미지 저장
 		prodService.saveProd(inProdDTO, inImgDTO);
@@ -411,7 +409,7 @@ public class AdminPageController {
 			// 이미지 dto 세팅
 			ProdImgDTO inImgDTO = new ProdImgDTO();
 			
-			// prodImg은 바꿈 prodDetailImg은 안바꿈
+			// 1. prodImg은 바꿈 prodDetailImg은 안바꿈
 			if(!CustomUtill.isNullOrEmpty(prodImg) && CustomUtill.isNullOrEmpty(prodDetailImg)) 
 			{
 				
@@ -419,7 +417,7 @@ public class AdminPageController {
 				
 			}
 			
-			// prodImg은 안바꿈 prodDetailImg은 바꿈
+			// 2. prodImg은 안바꿈 prodDetailImg은 바꿈
 			else if (CustomUtill.isNullOrEmpty(prodImg) && !CustomUtill.isNullOrEmpty(prodDetailImg)) 
 			{
 				
@@ -427,7 +425,7 @@ public class AdminPageController {
 				
 			}
 			
-			// 둘다 바꿀 경우
+			// 3. 둘다 바꿀 경우
 			else if(!CustomUtill.isNullOrEmpty(prodImg) && !CustomUtill.isNullOrEmpty(prodDetailImg))
 			{
 				
