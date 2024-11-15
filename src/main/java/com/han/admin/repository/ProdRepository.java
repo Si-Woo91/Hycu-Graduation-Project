@@ -31,18 +31,10 @@ public interface ProdRepository extends JpaRepository<ProdInfo, Long>{
 	 * @param endRow
 	 * @return
 	 */
-    @Query(value = "SELECT * FROM ( " +
-            "SELECT p.*, ROWNUM AS rnum " +
-            "FROM ( " +
-            "SELECT * FROM prod_info " +
-            "WHERE prod_nm LIKE %:keyword% " +
-            "ORDER BY id " +
-            ") p " +
-            "WHERE ROWNUM <= :endRow) " +
+    @Query(value = "SELECT * " +
+    		"FROM (SELECT p.*, ROWNUM AS rnum FROM (SELECT * FROM prod_info WHERE prod_nm LIKE %:keyword% ORDER BY id) p WHERE ROWNUM <= :endRow) " +
             "WHERE rnum > :startRow", nativeQuery = true)
-	List<ProdInfo> findByProdNmContainingWithPagination(@Param("keyword") String keyword,
-											            @Param("startRow") int startRow,
-											            @Param("endRow") int endRow);
+	List<ProdInfo> findByProdNmContainingWithPagination(@Param("keyword") String keyword, @Param("startRow") int startRow, @Param("endRow") int endRow);
 												
 	/**
 	 * 상품조회 및 페이징 처리
@@ -51,13 +43,8 @@ public interface ProdRepository extends JpaRepository<ProdInfo, Long>{
 	 * @param endRow
 	 * @return
 	 */
-    @Query(value = "SELECT * FROM ( " +
-            "SELECT p.*, ROWNUM AS rnum " +
-            "FROM ( " +
-            "SELECT * FROM prod_info " +
-            "ORDER BY id " +
-            ") p " +
-            "WHERE ROWNUM <= :endRow) " +
+    @Query(value = "SELECT * " +
+            "FROM (SELECT p.*, ROWNUM AS rnum FROM (SELECT * FROM prod_info ORDER BY id ) p WHERE ROWNUM <= :endRow) " +
             "WHERE rnum > :startRow", nativeQuery = true)
     List<ProdInfo> findProdInfoWithPagination(@Param("startRow") int startRow, @Param("endRow") int endRow);
     

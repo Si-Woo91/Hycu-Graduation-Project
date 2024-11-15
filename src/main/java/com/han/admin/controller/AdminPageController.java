@@ -70,7 +70,7 @@ public class AdminPageController {
 		// 사용자 정보가 없을 경우 페이지 처리를 위한 추가 로직
 		boolean noUsers;
 		
-		if (CustomUtill.isNullOrEmpty(userInfoPage.getContent())) 
+		if (CustomUtill.isNullOrEmpty(userInfoPage)) 
 		{
 		
 			noUsers = true;
@@ -80,15 +80,16 @@ public class AdminPageController {
 		{
 
 			noUsers = false;
+			
+			model.addAttribute("userInfoPage", userInfoPage.getContent());
+			model.addAttribute("currentPage", userInfoPage.getNumber());
+			model.addAttribute("totalPages", userInfoPage.getTotalPages());
 
 		}
 
 		logger.debug("noUsers :: " + noUsers);
 
 		model.addAttribute("noUsers", noUsers);
-		model.addAttribute("userInfoPage", userInfoPage.getContent());
-		model.addAttribute("currentPage", userInfoPage.getNumber());
-		model.addAttribute("totalPages", userInfoPage.getTotalPages());
 		model.addAttribute("keyword", keyword);
 
 		return "admin/userMNG";
@@ -223,7 +224,7 @@ public class AdminPageController {
 		{
 			noProds = false;
 		}
-		logger.debug("noUsers :: " + noProds);
+		logger.debug("noProds :: " + noProds);
 
 		model.addAttribute("noProds", noProds);
 		model.addAttribute("prodInfoPage", prodInfoPage.getContent());

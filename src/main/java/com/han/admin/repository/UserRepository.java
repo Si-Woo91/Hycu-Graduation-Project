@@ -35,18 +35,10 @@ public interface UserRepository extends JpaRepository<UserInfo, Long>, PagingAnd
      * @param endRow
      * @return
      */
-    @Query(value = "SELECT * FROM ( " +
-                   "SELECT u.*, ROWNUM AS rnum " +
-                   "FROM ( " +
-                   "SELECT * FROM user_info " +
-                   "WHERE user_nm LIKE %:keyword% " +
-                   "ORDER BY id " +
-                   ") u " +
-                   "WHERE ROWNUM <= :endRow) " +
-                   "WHERE rnum > :startRow", nativeQuery = true)
-    List<UserInfo> findByUserNmContainingWithPagination(@Param("keyword") String keyword,
-                                                       @Param("startRow") int startRow,
-                                                       @Param("endRow") int endRow);
+    @Query(value =	"SELECT * " +
+    				"FROM (SELECT u.*, ROWNUM AS rnum FROM (SELECT * FROM user_info WHERE user_nm LIKE %:keyword% ORDER BY id) u WHERE ROWNUM <= :endRow) " +
+    				"WHERE rnum > :startRow", nativeQuery = true)
+    List<UserInfo> findByUserNmContainingWithPagination(@Param("keyword") String keyword, @Param("startRow") int startRow, @Param("endRow") int endRow);
 	
     /**
      * 회원 조회
@@ -55,13 +47,8 @@ public interface UserRepository extends JpaRepository<UserInfo, Long>, PagingAnd
      * @param endRow
      * @return
      */
-    @Query(value = "SELECT * FROM ( " +
-            "SELECT u.*, ROWNUM AS rnum " +
-            "FROM ( " +
-            "SELECT * FROM user_info " +
-            "ORDER BY id " +
-            ") u " +
-            "WHERE ROWNUM <= :endRow) " +
+    @Query(value = "SELECT * " +
+    		"FROM (SELECT u.*, ROWNUM AS rnum FROM (SELECT * FROM user_info ORDER BY id) u WHERE ROWNUM <= :endRow) " +
             "WHERE rnum > :startRow", nativeQuery = true)
     List<UserInfo> findUserInfoWithPagination(@Param("startRow") int startRow, @Param("endRow") int endRow);
     
