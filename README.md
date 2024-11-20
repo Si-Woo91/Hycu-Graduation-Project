@@ -37,6 +37,7 @@
 <br><br>
 
 # 🖥️ 화면구현
+
 <table>
   <thead>
     <tr>
@@ -55,7 +56,7 @@
   
   </br></br>
 
-  <table>
+<table>
   <thead>
     <tr>
       <th style="text-align: center;">회원관리 화면</th>
@@ -66,7 +67,6 @@
       <td align="center">
 	      <img src="https://github.com/user-attachments/assets/6d1b2cca-bbf2-43e4-b71d-2064b0270865">
       </td>
-
     </tr>
   </tbody>
 </table>
@@ -86,7 +86,6 @@
       <td align="center">
 	      <img src="https://github.com/user-attachments/assets/459d550e-a030-4340-8d85-e433c694b447">
       </td>
-
     </tr>
   </tbody>
 </table>
@@ -106,7 +105,6 @@
       <td align="center">
 	      <img src="https://github.com/user-attachments/assets/e5403820-c592-4c88-aa53-58331ba697d6">
       </td>
-
     </tr>
   </tbody>
 </table>
@@ -126,7 +124,6 @@
       <td align="center">
 	      <img src="https://github.com/user-attachments/assets/2baf0953-5867-4d0c-8a7a-cb547d362ddf">
       </td>
-
     </tr>
   </tbody>
 </table>
@@ -146,7 +143,6 @@
       <td align="center">
 	      <img src="https://github.com/user-attachments/assets/2b7d2a88-922d-4fc1-8c86-030be42ff93f">
       </td>
-
     </tr>
   </tbody>
 </table>
@@ -166,7 +162,6 @@
       <td align="center">
 	      <img src="https://github.com/user-attachments/assets/bb334e4d-bf04-421f-ad1a-8adcc3c5c91b">
       </td>
-
     </tr>
   </tbody>
 </table>
