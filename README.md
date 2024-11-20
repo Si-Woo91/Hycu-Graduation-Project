@@ -50,7 +50,8 @@
     </tr>
   </tbody>
 </table> 
-- **설명** : 올바른 관리자 ID, PassWord를 입력시에만 로그인 가능(Spring Security를 이용하여 인증 및 검증)
+
+- **설명**  : 올바른 관리자 ID, PassWord를 입력시에만 로그인 가능(Spring Security를 이용하여 인증 및 검증)
   
   </br></br>
 
