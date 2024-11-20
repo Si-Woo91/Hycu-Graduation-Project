@@ -4,7 +4,7 @@
 # 📖 목차
 
 1. [기술스택](#-기술스택)
-2. [화면구성 및 기능](#%EF%B8%8F-화면구성-및-기능)
+2. [화면구성 및 기능](#%EF%B8%8F-화면구현)
 
 <br><br>
 
@@ -36,7 +36,45 @@
 
 <br><br>
 
-# 🖥️ 화면구성 및 기능
+# 🖥️ 화면구현
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: center;">로그인 화면</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td align="center">
+	      <img src="https://github.com/user-attachments/assets/bb5f60ec-0532-41d8-9a20-ad13605cf523">
+    </tr>
+  </tbody>
+</table> 
+- **설명** : 올바른 관리자 ID, PassWord를 입력시에만 로그인 가능(Spring Security를 이용하여 인증 및 검증)
+  
+  </br></br>
+
+  <table>
+  <thead>
+    <tr>
+      <th style="text-align: center;">회원관리 화면</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td align="center">
+	      <img src="https://github.com/user-attachments/assets/6d1b2cca-bbf2-43e4-b71d-2064b0270865">
+      </td>
+
+    </tr>
+  </tbody>
+</table>
+
+ - **설명** : 회원 선택 후 삭제 버튼 클릭시 회원 정보 삭제.(다중 삭제 가능)
+
+<br><br>
+
+
 
 
 <br><br>
