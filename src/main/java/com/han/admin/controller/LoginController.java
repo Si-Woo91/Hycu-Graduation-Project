@@ -41,14 +41,6 @@ public class LoginController {
 			return "redirect:/userList";
 		}
 		
-		 //관리자 비밀번호 암호화
-//		BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-//		 
-//		String encodedPassword = passwordEncoder.encode("gkgk!123");;
-//		 
-//		System.out.println("Encoded Password: " + encodedPassword);
-		
-		
 		logger.debug("err :: " + error);
 		logger.debug("exception :: " + exception);
 		

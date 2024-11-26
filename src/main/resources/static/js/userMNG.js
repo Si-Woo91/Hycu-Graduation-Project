@@ -60,7 +60,7 @@ $(document).ready(function() {
 				success: function(res) {
 					if (res.success) {
 
-						location.reload();
+						window.location.href = '/userList';
 
 					} else {
 
